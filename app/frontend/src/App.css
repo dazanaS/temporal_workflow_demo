@@ -1,26 +1,32 @@
 /* PocketHealth Temporal Workflow Analytics Dashboard */
 :root {
   --bg: #f8fafc;
+  --bg-alt: #f1f5f9;
   --card-bg: #ffffff;
   --border: #e2e8f0;
   --text: #334155;
   --text-light: #64748b;
   --text-heading: #0f172a;
-  --primary: #2563eb;
-  --primary-light: #eff6ff;
-  --success: #059669;
-  --danger: #dc2626;
+  --text-dark: #1e293b;
+  --primary: #0066ff;
+  --primary-light: #bedeff;
+  --primary-bg: rgba(0, 102, 255, 0.08);
+  --success: #34a86c;
+  --success-light: #c2e5d3;
+  --danger: #ef5350;
+  --danger-light: #facbcb;
+  --purple: #8e5edb;
+  --purple-light: #ddcff4;
   --warning: #d97706;
-  --purple: #7c3aed;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
-  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+  --radius: 8px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -51,8 +57,8 @@ body {
 .logo {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--purple));
+  border-radius: 7px;
+  background: var(--primary);
   color: white;
   display: flex;
   align-items: center;
@@ -71,6 +77,7 @@ body {
 .header-sub {
   font-size: 13px;
   color: var(--text-light);
+  font-weight: 500;
 }
 
 .header-badge {
@@ -80,7 +87,7 @@ body {
   font-size: 13px;
   color: var(--success);
   font-weight: 500;
-  background: #ecfdf5;
+  background: var(--success-light);
   padding: 6px 12px;
   border-radius: 20px;
 }
@@ -123,7 +130,7 @@ body {
 .kpi-icon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,16 +168,18 @@ body {
   padding: 4px;
   margin-bottom: 24px;
   box-shadow: var(--shadow);
+  overflow-x: auto;
 }
 
 .tab {
   flex: 1;
-  padding: 10px 16px;
+  padding: 10px 12px;
   border: none;
   background: transparent;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-light);
   cursor: pointer;
   transition: all 0.2s;
@@ -178,6 +187,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .tab:hover { color: var(--text-heading); background: var(--bg); }
@@ -233,11 +243,11 @@ thead th {
 
 tbody td {
   padding: 10px 12px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--bg-alt);
   color: var(--text);
 }
 
-tbody tr:hover { background: #f8fafc; }
+tbody tr:hover { background: var(--bg); }
 
 .bold { font-weight: 600; color: var(--text-heading); }
 
@@ -261,7 +271,7 @@ tbody tr:hover { background: #f8fafc; }
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  background: var(--primary-light);
+  background: var(--primary-bg);
   color: var(--primary);
   white-space: nowrap;
 }
@@ -297,14 +307,385 @@ tbody tr:hover { background: #f8fafc; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* --- Data Flow Tab --- */
+.data-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pipeline-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 32px 16px;
+  overflow-x: auto;
+}
+
+.pipeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.pipeline-node-box {
+  width: 130px;
+  padding: 16px 12px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pipeline-node-box:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.pipeline-node-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.pipeline-node-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.pipeline-node-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+.pipeline-node-sub {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.pipeline-connector {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pipeline-arrow {
+  width: 48px;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+}
+
+.pipeline-arrow::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  border: 5px solid transparent;
+  border-left-color: var(--border);
+}
+
+.pipeline-arrow.animated {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
+  background-size: 200% 100%;
+  animation: flow 1.5s linear infinite;
+}
+
+.pipeline-arrow.animated::after {
+  border-left-color: var(--primary);
+}
+
+@keyframes flow {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.quality-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.quality-metric {
+  text-align: center;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius);
+}
+
+.quality-metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.quality-metric-label {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* --- Invoice Tab --- */
+.invoice-controls {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.invoice-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.invoice-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.invoice-field select,
+.invoice-field input {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--card-bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.invoice-field select:focus,
+.invoice-field input:focus {
+  border-color: var(--primary);
+}
+
+.btn-primary {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover { background: var(--bg-alt); }
+
+.invoice-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  background: white;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--text-heading);
+}
+
+.invoice-brand h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.invoice-brand p {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+.invoice-meta {
+  text-align: right;
+}
+
+.invoice-meta h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.invoice-meta p {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+.invoice-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.invoice-details-col h5 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.invoice-details-col p {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.invoice-table thead th {
+  text-align: left;
+  padding: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border);
+}
+
+.invoice-table thead th:last-child,
+.invoice-table tbody td:last-child {
+  text-align: right;
+}
+
+.invoice-table tbody td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--bg-alt);
+}
+
+.invoice-totals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 2px solid var(--text-heading);
+}
+
+.invoice-total-row {
+  display: flex;
+  gap: 48px;
+  font-size: 14px;
+}
+
+.invoice-total-row.grand {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.invoice-total-label {
+  color: var(--text-light);
+  min-width: 100px;
+  text-align: right;
+}
+
+.invoice-total-value {
+  min-width: 100px;
+  text-align: right;
+}
+
+.invoice-empty {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-light);
+}
+
+.invoice-empty p:first-child {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+/* --- Genie Tab --- */
+.genie-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.genie-iframe {
+  width: 100%;
+  height: 600px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.genie-fallback {
+  text-align: center;
+  padding: 48px;
+}
+
+.genie-fallback p {
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+/* --- Print Styles for Invoice --- */
+@media print {
+  .header, .kpi-grid, .tabs, .invoice-controls, .btn-secondary { display: none !important; }
+  .app { padding: 0; max-width: 100%; }
+  .card { border: none; box-shadow: none; padding: 0; }
+  .invoice-preview { border: none; padding: 0; }
+  body { background: white; }
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .chart-grid { grid-template-columns: 1fr; }
+  .quality-metrics { grid-template-columns: 1fr; }
+  .pipeline-diagram { flex-wrap: wrap; }
 }
 
 @media (max-width: 640px) {
   .kpi-grid { grid-template-columns: 1fr; }
   .header { flex-direction: column; align-items: flex-start; gap: 12px; }
   .app { padding: 0 16px 32px; }
+  .invoice-controls { flex-direction: column; }
+  .invoice-header { flex-direction: column; gap: 16px; }
+  .invoice-meta { text-align: left; }
 }

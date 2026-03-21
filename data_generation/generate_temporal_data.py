@@ -17,6 +17,44 @@ MAX_WORKFLOWS_PER_DAY = 200
 OUTPUT_DIR = "output"
 FAILURE_RATE = 0.03  # 3% failure rate
 
+# --- Tenant Data ---
+TENANTS = [
+    {"tenantId": "TEN-001", "name": "Ontario Health Network"},
+    {"tenantId": "TEN-002", "name": "Quebec Medical Group"},
+    {"tenantId": "TEN-003", "name": "Western Canada Health Alliance"},
+    {"tenantId": "TEN-004", "name": "GTA Imaging Partners"},
+]
+
+FACILITY_TENANT_MAP = {
+    "FAC-1001": "TEN-001",  # Toronto General Hospital -> Ontario Health Network
+    "FAC-1002": "TEN-001",  # Sunnybrook -> Ontario Health Network
+    "FAC-1003": "TEN-004",  # Mount Sinai -> GTA Imaging Partners
+    "FAC-1004": "TEN-004",  # St. Michael's -> GTA Imaging Partners
+    "FAC-1005": "TEN-004",  # Women's College -> GTA Imaging Partners
+    "FAC-2001": "TEN-001",  # Ottawa Hospital -> Ontario Health Network
+    "FAC-2002": "TEN-001",  # Kingston General -> Ontario Health Network
+    "FAC-3001": "TEN-002",  # McGill -> Quebec Medical Group
+    "FAC-3002": "TEN-002",  # CHUM -> Quebec Medical Group
+    "FAC-4001": "TEN-003",  # Vancouver General -> Western Canada Health Alliance
+    "FAC-4002": "TEN-003",  # St. Paul's -> Western Canada Health Alliance
+    "FAC-5001": "TEN-003",  # Foothills -> Western Canada Health Alliance
+}
+
+TENANT_LOOKUP = {t["tenantId"]: t for t in TENANTS}
+
+APPOINTMENT_PRICING = {
+    "MRI": 150.00,
+    "CT Scan": 125.00,
+    "Ultrasound": 85.00,
+    "X-Ray": 45.00,
+    "Blood Work": 35.00,
+    "Primary Care Visit": 75.00,
+    "Specialist Consultation": 120.00,
+    "Physical Therapy": 90.00,
+    "Dermatology": 110.00,
+    "Cardiology": 135.00,
+}
+
 # --- Reference Data ---
 WORKFLOW_TYPES = [
     ("ScheduleAppointmentWorkflow", 0.50),
@@ -182,6 +220,10 @@ def generate_workflow_record(day_date, seq_num):
     appt_minute = random.choice([0, 15, 30, 45])
     duration_minutes = random.choice([15, 30, 45, 60, 90])
 
+    # Resolve tenant for this facility
+    tenant_id = FACILITY_TENANT_MAP[facility["facilityId"]]
+    tenant = TENANT_LOOKUP[tenant_id]
+
     workflow_id = f"{workflow_type.lower().replace('workflow', '')}-{patient_id.lower()}-{day_date.strftime('%Y%m%dT%H%M')}"
     run_id = str(uuid.uuid4())
 
@@ -204,7 +246,9 @@ def generate_workflow_record(day_date, seq_num):
         "searchAttributes": {
             "PatientRegion": facility["region"],
             "AppointmentType": appointment_type,
-            "FacilityId": facility["facilityId"]
+            "FacilityId": facility["facilityId"],
+            "TenantId": tenant_id,
+            "TenantName": tenant["name"]
         },
         "result": {
             "appointmentId": generate_appointment_id(day_date.strftime("%Y-%m-%d")),
@@ -236,6 +280,10 @@ def generate_workflow_record(day_date, seq_num):
                 "confirmedDate": day_date.strftime("%Y-%m-%d") if status == "Completed" else None,
                 "confirmationMethod": random.choice(CONFIRMATION_METHODS) if status == "Completed" else None,
                 "reminderSent": random.choice([True, False]) if status == "Completed" else False
+            },
+            "tenant": {
+                "tenantId": tenant_id,
+                "name": tenant["name"]
             }
         }
     }

@@ -11,3 +11,5 @@ command:
 env:
   - name: DATABRICKS_WAREHOUSE_ID
     value: "a82088b3bfe8752c"
+  - name: GENIE_SPACE_ID
+    value: "01f123dce7791325a8101d10912259b3"

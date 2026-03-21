@@ -43,6 +43,10 @@ AS SELECT
   CAST(closeTime AS TIMESTAMP) AS close_time,
   TIMESTAMPDIFF(SECOND, CAST(startTime AS TIMESTAMP), CAST(closeTime AS TIMESTAMP)) AS execution_duration_seconds,
 
+  -- Tenant details
+  result.tenant.tenantId AS tenant_id,
+  result.tenant.name AS tenant_name,
+
   -- Patient details
   result.patient.patientId AS patient_id,
   result.patient.firstName AS patient_first_name,
@@ -125,13 +129,15 @@ AS SELECT
   facility_name,
   facility_address,
   patient_region,
+  tenant_id,
+  tenant_name,
   COUNT(*) AS total_appointments,
   COUNT(CASE WHEN status = 'Completed' THEN 1 END) AS successful_appointments,
   COUNT(DISTINCT provider_id) AS unique_providers,
   COUNT(DISTINCT patient_id) AS unique_patients,
   COUNT(DISTINCT appointment_date) AS active_days
 FROM LIVE.workflows_silver
-GROUP BY facility_id, facility_name, facility_address, patient_region;
+GROUP BY facility_id, facility_name, facility_address, patient_region, tenant_id, tenant_name;
 
 -- =============================================================================
 -- GOLD: Provider Workload
@@ -163,3 +169,33 @@ AS SELECT
 FROM LIVE.workflows_silver
 WHERE status IN ('Failed', 'TimedOut')
 GROUP BY workflow_type, failure_reason;
+
+-- =============================================================================
+-- GOLD: Billing Summary (by tenant, facility, appointment type, date)
+-- =============================================================================
+CREATE OR REFRESH MATERIALIZED VIEW billing_summary
+COMMENT 'Billing-ready summary: billable appointment counts by tenant, facility, type, and date'
+AS SELECT
+  tenant_id,
+  tenant_name,
+  facility_id,
+  facility_name,
+  appointment_type,
+  DATE(start_time) AS service_date,
+  COUNT(*) AS total_count,
+  COUNT(CASE WHEN status = 'Completed' THEN 1 END) AS billable_count,
+  COUNT(CASE WHEN status != 'Completed' THEN 1 END) AS non_billable_count
+FROM LIVE.workflows_silver
+GROUP BY tenant_id, tenant_name, facility_id, facility_name, appointment_type, DATE(start_time);
+
+-- =============================================================================
+-- GOLD: Pipeline Metrics (record counts across layers)
+-- =============================================================================
+CREATE OR REFRESH MATERIALIZED VIEW pipeline_metrics
+COMMENT 'Record counts at each medallion layer for data flow visualization'
+AS SELECT
+  'silver' AS layer,
+  COUNT(*) AS record_count,
+  COUNT(CASE WHEN status = 'Completed' THEN 1 END) AS valid_count,
+  COUNT(CASE WHEN status != 'Completed' THEN 1 END) AS error_count
+FROM LIVE.workflows_silver;

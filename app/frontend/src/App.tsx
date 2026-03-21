@@ -4,26 +4,26 @@ import {
   PieChart, Pie, Cell, BarChart, Bar, Legend,
 } from "recharts";
 import "./App.css";
+import type {
+  Summary, DailyTrend, WorkflowType, AppointmentType,
+  Facility, RecentWorkflow, Failure,
+} from "./types";
+import { CHART_COLORS, STATUS_COLORS } from "./theme";
+import DataFlowTab from "./components/DataFlowTab";
+import InvoiceTab from "./components/InvoiceTab";
+import GenieTab from "./components/GenieTab";
 
-// --- Types ---
-interface Summary {
-  total_workflows: number;
-  successful_workflows: number;
-  failed_workflows: number;
-  timed_out_workflows: number;
-  success_rate: number;
-  avg_duration_seconds: number;
-}
+type TabId = "overview" | "dataflow" | "invoicing" | "facilities" | "recent" | "failures" | "genie";
 
-interface DailyTrend { date: string; total: number; completed: number; failed: number; }
-interface WorkflowType { workflow_type: string; count: number; success_rate: number; }
-interface AppointmentType { appointment_type: string; total: number; successful: number; success_rate: number; }
-interface Facility { facility_name: string; region: string; total_appointments: number; successful: number; unique_providers: number; unique_patients: number; }
-interface RecentWorkflow { workflow_id: string; workflow_type: string; status: string; patient: string; appointment_type: string; facility: string; provider: string; start_time: string; duration_seconds: number; failure_reason: string | null; }
-interface Failure { workflow_type: string; failure_reason: string; count: number; }
-
-const COLORS = ["#2563eb", "#7c3aed", "#059669", "#d97706", "#dc2626", "#0891b2"];
-const STATUS_COLORS: Record<string, string> = { Completed: "#059669", Failed: "#dc2626", TimedOut: "#d97706" };
+const TAB_LABELS: Record<TabId, string> = {
+  overview: "Overview",
+  dataflow: "Data Flow",
+  invoicing: "Invoicing",
+  facilities: "Facilities",
+  recent: "Recent",
+  failures: "Failures",
+  genie: "Ask AI",
+};
 
 function formatDuration(seconds: number): string {
   if (seconds < 60) return `${Math.round(seconds)}s`;
@@ -56,7 +56,7 @@ export default function App() {
   const [recentWorkflows, setRecentWorkflows] = useState<RecentWorkflow[]>([]);
   const [failures, setFailures] = useState<Failure[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"overview" | "facilities" | "recent" | "failures">("overview");
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
 
   useEffect(() => {
     async function fetchAll() {
@@ -113,17 +113,17 @@ export default function App() {
 
       {summary && (
         <div className="kpi-grid">
-          <KpiCard icon="&#9881;" label="Total Workflows" value={summary.total_workflows.toLocaleString()} sub="Last 30 days" color="#2563eb" />
-          <KpiCard icon="&#10003;" label="Success Rate" value={`${summary.success_rate}%`} sub={`${summary.successful_workflows.toLocaleString()} completed`} color="#059669" />
-          <KpiCard icon="&#9202;" label="Avg Duration" value={formatDuration(summary.avg_duration_seconds)} sub="Per workflow execution" color="#7c3aed" />
-          <KpiCard icon="&#10007;" label="Failed / Timed Out" value={summary.failed_workflows + summary.timed_out_workflows} sub={`${summary.failed_workflows} failed, ${summary.timed_out_workflows} timed out`} color="#dc2626" />
+          <KpiCard icon="&#9881;" label="Total Workflows" value={summary.total_workflows.toLocaleString()} sub="Last 30 days" color={CHART_COLORS[0]} />
+          <KpiCard icon="&#10003;" label="Success Rate" value={`${summary.success_rate}%`} sub={`${summary.successful_workflows.toLocaleString()} completed`} color={CHART_COLORS[2]} />
+          <KpiCard icon="&#9202;" label="Avg Duration" value={formatDuration(summary.avg_duration_seconds)} sub="Per workflow execution" color={CHART_COLORS[1]} />
+          <KpiCard icon="&#10007;" label="Failed / Timed Out" value={summary.failed_workflows + summary.timed_out_workflows} sub={`${summary.failed_workflows} failed, ${summary.timed_out_workflows} timed out`} color={CHART_COLORS[4]} />
         </div>
       )}
 
       <div className="tabs">
-        {(["overview", "facilities", "recent", "failures"] as const).map(tab => (
+        {(Object.keys(TAB_LABELS) as TabId[]).map(tab => (
           <button key={tab} className={`tab ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {TAB_LABELS[tab]}
           </button>
         ))}
       </div>
@@ -134,12 +134,12 @@ export default function App() {
             <h2>Daily Workflow Volume</h2>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={dailyTrend}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="date" tickFormatter={d => new Date(d).toLocaleDateString("en-CA", { month: "short", day: "numeric" })} fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip labelFormatter={d => new Date(d as string).toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric" })} />
-                <Line type="monotone" dataKey="completed" stroke="#059669" strokeWidth={2} name="Completed" dot={false} />
-                <Line type="monotone" dataKey="failed" stroke="#dc2626" strokeWidth={2} name="Failed/TimedOut" dot={false} />
+                <Line type="monotone" dataKey="completed" stroke={STATUS_COLORS.Completed} strokeWidth={2} name="Completed" dot={false} />
+                <Line type="monotone" dataKey="failed" stroke={STATUS_COLORS.Failed} strokeWidth={2} name="Failed/TimedOut" dot={false} />
                 <Legend />
               </LineChart>
             </ResponsiveContainer>
@@ -151,7 +151,7 @@ export default function App() {
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie data={workflowTypes} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="count" nameKey="workflow_type" label={({ name, value }: any) => `${name}: ${value}`} labelLine={false}>
-                    {workflowTypes.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                    {workflowTypes.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
                   </Pie>
                   <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
                 </PieChart>
@@ -162,17 +162,20 @@ export default function App() {
               <h2>Appointments by Type</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={appointmentTypes} layout="vertical" margin={{ left: 120 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis type="number" fontSize={12} />
                   <YAxis type="category" dataKey="appointment_type" fontSize={12} width={115} />
                   <Tooltip />
-                  <Bar dataKey="total" fill="#2563eb" radius={[0, 4, 4, 0]} name="Total" />
+                  <Bar dataKey="total" fill={CHART_COLORS[0]} radius={[0, 4, 4, 0]} name="Total" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
         </>
       )}
+
+      {activeTab === "dataflow" && <DataFlowTab />}
+      {activeTab === "invoicing" && <InvoiceTab />}
 
       {activeTab === "facilities" && (
         <div className="card full-width">
@@ -271,6 +274,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {activeTab === "genie" && <GenieTab />}
     </div>
   );
 }

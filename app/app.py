@@ -6,7 +6,7 @@ FastAPI backend serving React dashboard with SQL Warehouse queries.
 import os
 import json
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from databricks.sdk import WorkspaceClient
@@ -16,6 +16,20 @@ from databricks import sql as dbsql
 CATALOG = "dazana_classic_ws_catalog"
 SCHEMA = "temporal"
 IS_DATABRICKS_APP = bool(os.environ.get("DATABRICKS_APP_NAME"))
+
+# --- Appointment Pricing (server-side rate card) ---
+APPOINTMENT_PRICING = {
+    "MRI": 150.00,
+    "CT Scan": 125.00,
+    "Ultrasound": 85.00,
+    "X-Ray": 45.00,
+    "Blood Work": 35.00,
+    "Primary Care Visit": 75.00,
+    "Specialist Consultation": 120.00,
+    "Physical Therapy": 90.00,
+    "Dermatology": 110.00,
+    "Cardiology": 135.00,
+}
 
 
 def get_connection():
@@ -251,6 +265,130 @@ def get_recent_workflows():
         }
         for r in results
     ]
+
+
+# --- New Endpoints ---
+
+@app.get("/api/pipeline-metrics")
+def get_pipeline_metrics():
+    """Record counts at each medallion layer for data flow visualization."""
+    # Bronze count
+    bronze_q = f"SELECT COUNT(*) AS cnt FROM {CATALOG}.{SCHEMA}.workflows_bronze"
+    bronze_res = run_query(bronze_q)
+    bronze_count = int(bronze_res[0]["cnt"]) if bronze_res else 0
+
+    # Silver count
+    silver_q = f"SELECT COUNT(*) AS cnt FROM {CATALOG}.{SCHEMA}.workflows_silver"
+    silver_res = run_query(silver_q)
+    silver_count = int(silver_res[0]["cnt"]) if silver_res else 0
+
+    # Gold table counts
+    gold_tables = [
+        "daily_workflow_summary",
+        "appointment_type_metrics",
+        "facility_utilization",
+        "provider_workload",
+        "failure_analysis",
+        "billing_summary",
+    ]
+    gold_counts = []
+    for table_name in gold_tables:
+        try:
+            q = f"SELECT COUNT(*) AS cnt FROM {CATALOG}.{SCHEMA}.{table_name}"
+            res = run_query(q)
+            gold_counts.append({"name": table_name, "count": int(res[0]["cnt"]) if res else 0})
+        except Exception:
+            gold_counts.append({"name": table_name, "count": 0})
+
+    return {
+        "bronze_count": bronze_count,
+        "silver_count": silver_count,
+        "gold_tables": gold_counts,
+        "rows_dropped": max(0, bronze_count - silver_count),
+    }
+
+
+@app.get("/api/tenants")
+def get_tenants():
+    """List all distinct tenants for invoice dropdown."""
+    query = f"""
+    SELECT DISTINCT tenant_id, tenant_name
+    FROM {CATALOG}.{SCHEMA}.billing_summary
+    WHERE tenant_id IS NOT NULL
+    ORDER BY tenant_name
+    """
+    results = run_query(query)
+    return [
+        {"tenant_id": r["tenant_id"], "tenant_name": r["tenant_name"]}
+        for r in results
+    ]
+
+
+@app.get("/api/invoice")
+def get_invoice(
+    tenant_id: str = Query(...),
+    start_date: str = Query(...),
+    end_date: str = Query(...),
+):
+    """Calculate invoice with line items for a tenant and date range."""
+    query = f"""
+    SELECT
+        appointment_type,
+        SUM(billable_count) AS billable_count
+    FROM {CATALOG}.{SCHEMA}.billing_summary
+    WHERE tenant_id = '{tenant_id}'
+      AND service_date >= '{start_date}'
+      AND service_date <= '{end_date}'
+    GROUP BY appointment_type
+    ORDER BY appointment_type
+    """
+    results = run_query(query)
+
+    # Look up tenant name
+    tenant_name = tenant_id
+    tenant_q = f"""
+    SELECT DISTINCT tenant_name FROM {CATALOG}.{SCHEMA}.billing_summary
+    WHERE tenant_id = '{tenant_id}' LIMIT 1
+    """
+    tenant_res = run_query(tenant_q)
+    if tenant_res:
+        tenant_name = tenant_res[0]["tenant_name"]
+
+    line_items = []
+    total = 0.0
+    for r in results:
+        appt_type = r["appointment_type"]
+        count = int(r["billable_count"])
+        unit_price = APPOINTMENT_PRICING.get(appt_type, 0.0)
+        subtotal = count * unit_price
+        total += subtotal
+        line_items.append({
+            "appointment_type": appt_type,
+            "count": count,
+            "unit_price": unit_price,
+            "subtotal": round(subtotal, 2),
+        })
+
+    return {
+        "tenant_id": tenant_id,
+        "tenant_name": tenant_name,
+        "start_date": start_date,
+        "end_date": end_date,
+        "line_items": line_items,
+        "total": round(total, 2),
+    }
+
+
+@app.get("/api/genie-url")
+def get_genie_url():
+    """Return Genie Space embed URL."""
+    space_id = os.environ.get("GENIE_SPACE_ID", "")
+    if not space_id:
+        return {"url": None}
+    host = os.environ.get("DATABRICKS_HOST", "")
+    if host and not host.startswith("http"):
+        host = f"https://{host}"
+    return {"url": f"{host}/genie/rooms/{space_id}"}
 
 
 # --- Serve React Frontend ---
