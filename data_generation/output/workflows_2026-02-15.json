@@ -1,0 +1,4384 @@
+[
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-50225-20260215T0000",
+      "runId": "984f0123-6d01-468d-8d51-f121e4b1cef1"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:04:05Z",
+    "closeTime": "2026-02-15T07:12:09Z",
+    "executionTime": "2026-02-15T07:04:05Z",
+    "historyLength": 21,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-4002",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2045",
+      "patient": {
+        "patientId": "P-50225",
+        "firstName": "Aria",
+        "lastName": "Tremblay",
+        "dateOfBirth": "1992-04-17",
+        "healthCardNumber": "XXXX-XXX-959"
+      },
+      "provider": {
+        "providerId": "DR-1004",
+        "name": "Dr. Maria Santos",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-03-16",
+        "scheduledTime": "11:30:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-4002",
+          "name": "St. Paul's Hospital",
+          "address": "1081 Burrard St, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-96763-20260215T0000",
+      "runId": "510fa9d4-0009-4b3b-8a53-d7ce8f25443b"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:06:20Z",
+    "closeTime": "2026-02-15T07:07:24Z",
+    "executionTime": "2026-02-15T07:06:20Z",
+    "historyLength": 9,
+    "stateTransitionCount": 8,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1356",
+      "patient": {
+        "patientId": "P-96763",
+        "firstName": "William",
+        "lastName": "Li",
+        "dateOfBirth": "2007-02-18",
+        "healthCardNumber": "XXXX-XXX-916"
+      },
+      "provider": {
+        "providerId": "DR-1007",
+        "name": "Dr. Robert Nguyen",
+        "specialty": "Neurology"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-02-18",
+        "scheduledTime": "14:00:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-14259-20260215T0000",
+      "runId": "b39f3e67-8254-4e31-8b26-ba8371b70bcc"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:21:05Z",
+    "closeTime": "2026-02-15T07:29:07Z",
+    "executionTime": "2026-02-15T07:21:05Z",
+    "historyLength": 24,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9815",
+      "patient": {
+        "patientId": "P-14259",
+        "firstName": "Jacob",
+        "lastName": "Miller",
+        "dateOfBirth": "1945-03-01",
+        "healthCardNumber": "XXXX-XXX-600"
+      },
+      "provider": {
+        "providerId": "DR-1004",
+        "name": "Dr. Maria Santos",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-22",
+        "scheduledTime": "16:00:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-28925-20260215T0000",
+      "runId": "1be9581b-b585-4093-8ac3-bc0939f099d8"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:27:39Z",
+    "closeTime": "2026-02-15T07:34:58Z",
+    "executionTime": "2026-02-15T07:27:39Z",
+    "historyLength": 28,
+    "stateTransitionCount": 9,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Blood Work",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9727",
+      "patient": {
+        "patientId": "P-28925",
+        "firstName": "Omar",
+        "lastName": "Wang",
+        "dateOfBirth": "1985-03-13",
+        "healthCardNumber": "XXXX-XXX-694"
+      },
+      "provider": {
+        "providerId": "DR-1003",
+        "name": "Dr. James Wilson",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Blood Work",
+        "scheduledDate": "2026-03-17",
+        "scheduledTime": "10:45:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-81009-20260215T0000",
+      "runId": "e98a0256-d731-46bc-8eec-569605747622"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:34:10Z",
+    "closeTime": "2026-02-15T07:42:12Z",
+    "executionTime": "2026-02-15T07:34:10Z",
+    "historyLength": 17,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2542",
+      "patient": {
+        "patientId": "P-81009",
+        "firstName": "Lucas",
+        "lastName": "Wang",
+        "dateOfBirth": "1990-02-19",
+        "healthCardNumber": "XXXX-XXX-352"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-03-02",
+        "scheduledTime": "15:45:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-59997-20260215T0000",
+      "runId": "315ce5f4-b73c-4244-88e2-a0609cdf4880"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T07:42:10Z",
+    "closeTime": "2026-02-15T07:47:33Z",
+    "executionTime": "2026-02-15T07:42:10Z",
+    "historyLength": 18,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-4026",
+      "patient": {
+        "patientId": "P-59997",
+        "firstName": "Isabella",
+        "lastName": "Kumar",
+        "dateOfBirth": "1940-06-18",
+        "healthCardNumber": "XXXX-XXX-787"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-03-15",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-83681-20260215T0000",
+      "runId": "8ddfce62-c456-45ff-820e-bea212817b09"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Failed",
+    "startTime": "2026-02-15T08:02:13Z",
+    "closeTime": "2026-02-15T08:03:40Z",
+    "executionTime": "2026-02-15T08:02:13Z",
+    "historyLength": 13,
+    "stateTransitionCount": 9,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8736",
+      "patient": {
+        "patientId": "P-83681",
+        "firstName": "Emma",
+        "lastName": "Park",
+        "dateOfBirth": "1979-12-15",
+        "healthCardNumber": "XXXX-XXX-567"
+      },
+      "provider": {
+        "providerId": "DR-1004",
+        "name": "Dr. Maria Santos",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-03-03",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": null,
+        "confirmationMethod": null,
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      },
+      "failureReason": "Referral authorization expired"
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-82933-20260215T0000",
+      "runId": "90263fa8-f3a9-4c8a-a4d8-b2c07824bf4c"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T08:34:25Z",
+    "closeTime": "2026-02-15T08:35:24Z",
+    "executionTime": "2026-02-15T08:34:25Z",
+    "historyLength": 18,
+    "stateTransitionCount": 7,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Blood Work",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-6544",
+      "patient": {
+        "patientId": "P-82933",
+        "firstName": "Leila",
+        "lastName": "Taylor",
+        "dateOfBirth": "1972-01-19",
+        "healthCardNumber": "XXXX-XXX-758"
+      },
+      "provider": {
+        "providerId": "DR-1012",
+        "name": "Dr. Catherine O'Brien",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Blood Work",
+        "scheduledDate": "2026-03-16",
+        "scheduledTime": "16:45:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-63327-20260215T0000",
+      "runId": "05997759-9efe-4f47-8042-7ae3eac714cd"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T08:40:25Z",
+    "closeTime": "2026-02-15T08:44:04Z",
+    "executionTime": "2026-02-15T08:40:25Z",
+    "historyLength": 14,
+    "stateTransitionCount": 8,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5410",
+      "patient": {
+        "patientId": "P-63327",
+        "firstName": "Emma",
+        "lastName": "Kumar",
+        "dateOfBirth": "1949-11-14",
+        "healthCardNumber": "XXXX-XXX-383"
+      },
+      "provider": {
+        "providerId": "DR-1014",
+        "name": "Dr. Anne-Marie Tremblay",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-07",
+        "scheduledTime": "11:15:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-59789-20260215T0000",
+      "runId": "325faef9-6fc7-4cd0-9f41-625ba0468043"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T09:11:46Z",
+    "closeTime": "2026-02-15T09:16:48Z",
+    "executionTime": "2026-02-15T09:11:46Z",
+    "historyLength": 20,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "MRI",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-4461",
+      "patient": {
+        "patientId": "P-59789",
+        "firstName": "Evelyn",
+        "lastName": "Davis",
+        "dateOfBirth": "1953-04-14",
+        "healthCardNumber": "XXXX-XXX-503"
+      },
+      "provider": {
+        "providerId": "DR-1015",
+        "name": "Dr. Kevin Zhang",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "MRI",
+        "scheduledDate": "2026-03-02",
+        "scheduledTime": "13:45:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-38290-20260215T0000",
+      "runId": "1378e629-71ff-413b-bd2b-da2abd6feef3"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T09:15:53Z",
+    "closeTime": "2026-02-15T09:23:05Z",
+    "executionTime": "2026-02-15T09:15:53Z",
+    "historyLength": 28,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Blood Work",
+      "FacilityId": "FAC-4002",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7131",
+      "patient": {
+        "patientId": "P-38290",
+        "firstName": "Priya",
+        "lastName": "Lee",
+        "dateOfBirth": "1990-02-13",
+        "healthCardNumber": "XXXX-XXX-970"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Blood Work",
+        "scheduledDate": "2026-03-06",
+        "scheduledTime": "10:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-4002",
+          "name": "St. Paul's Hospital",
+          "address": "1081 Burrard St, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-51272-20260215T0000",
+      "runId": "bfb288fc-9c3f-4cc8-a3e3-29075d838e47"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T09:16:49Z",
+    "closeTime": "2026-02-15T09:25:22Z",
+    "executionTime": "2026-02-15T09:16:49Z",
+    "historyLength": 28,
+    "stateTransitionCount": 4,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1499",
+      "patient": {
+        "patientId": "P-51272",
+        "firstName": "Arjun",
+        "lastName": "Lee",
+        "dateOfBirth": "1971-11-04",
+        "healthCardNumber": "XXXX-XXX-777"
+      },
+      "provider": {
+        "providerId": "DR-1011",
+        "name": "Dr. Hassan Ali",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-02-16",
+        "scheduledTime": "09:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-27414-20260215T0000",
+      "runId": "c341f854-25d0-46bb-96b8-f80e228195ed"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T09:43:36Z",
+    "closeTime": "2026-02-15T09:53:24Z",
+    "executionTime": "2026-02-15T09:43:36Z",
+    "historyLength": 18,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5963",
+      "patient": {
+        "patientId": "P-27414",
+        "firstName": "Ava",
+        "lastName": "Miller",
+        "dateOfBirth": "1947-05-21",
+        "healthCardNumber": "XXXX-XXX-862"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-03-02",
+        "scheduledTime": "13:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-55596-20260215T0000",
+      "runId": "46a7de75-2c33-41c7-a3d4-9f56feebef38"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T10:26:03Z",
+    "closeTime": "2026-02-15T10:27:13Z",
+    "executionTime": "2026-02-15T10:26:03Z",
+    "historyLength": 30,
+    "stateTransitionCount": 10,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3257",
+      "patient": {
+        "patientId": "P-55596",
+        "firstName": "Omar",
+        "lastName": "Jackson",
+        "dateOfBirth": "1996-06-12",
+        "healthCardNumber": "XXXX-XXX-561"
+      },
+      "provider": {
+        "providerId": "DR-1008",
+        "name": "Dr. Lisa Dubois",
+        "specialty": "Gastroenterology"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-19",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-52213-20260215T0000",
+      "runId": "7a4e1190-4854-43a7-a938-5b0b57baba2f"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T10:28:31Z",
+    "closeTime": "2026-02-15T10:36:45Z",
+    "executionTime": "2026-02-15T10:28:31Z",
+    "historyLength": 26,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1884",
+      "patient": {
+        "patientId": "P-52213",
+        "firstName": "William",
+        "lastName": "Stewart",
+        "dateOfBirth": "1970-03-11",
+        "healthCardNumber": "XXXX-XXX-837"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-03-11",
+        "scheduledTime": "15:00:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-60768-20260215T0000",
+      "runId": "8676cea0-8641-4959-8fec-e22f1d7906a5"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T10:34:51Z",
+    "closeTime": "2026-02-15T10:43:10Z",
+    "executionTime": "2026-02-15T10:34:51Z",
+    "historyLength": 18,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9316",
+      "patient": {
+        "patientId": "P-60768",
+        "firstName": "Wei",
+        "lastName": "Moore",
+        "dateOfBirth": "2002-11-20",
+        "healthCardNumber": "XXXX-XXX-143"
+      },
+      "provider": {
+        "providerId": "DR-1012",
+        "name": "Dr. Catherine O'Brien",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-02-18",
+        "scheduledTime": "09:45:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-88942-20260215T0000",
+      "runId": "a9819372-620b-4bd4-976a-511598d42b98"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T10:46:38Z",
+    "closeTime": "2026-02-15T10:56:05Z",
+    "executionTime": "2026-02-15T10:46:38Z",
+    "historyLength": 30,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5627",
+      "patient": {
+        "patientId": "P-88942",
+        "firstName": "Mia",
+        "lastName": "Jackson",
+        "dateOfBirth": "1987-07-19",
+        "healthCardNumber": "XXXX-XXX-359"
+      },
+      "provider": {
+        "providerId": "DR-1008",
+        "name": "Dr. Lisa Dubois",
+        "specialty": "Gastroenterology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-02-25",
+        "scheduledTime": "10:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-16913-20260215T0000",
+      "runId": "249d98b5-9b95-4dd7-9d84-d69bd8f72237"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T10:49:07Z",
+    "closeTime": "2026-02-15T10:57:17Z",
+    "executionTime": "2026-02-15T10:49:07Z",
+    "historyLength": 20,
+    "stateTransitionCount": 14,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1017",
+      "patient": {
+        "patientId": "P-16913",
+        "firstName": "Olivia",
+        "lastName": "Wilson",
+        "dateOfBirth": "1970-11-05",
+        "healthCardNumber": "XXXX-XXX-495"
+      },
+      "provider": {
+        "providerId": "DR-1013",
+        "name": "Dr. Raj Sharma",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-27",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-84888-20260215T0000",
+      "runId": "8ec2aac9-6e50-48de-b1cd-217263378015"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T11:07:05Z",
+    "closeTime": "2026-02-15T11:13:56Z",
+    "executionTime": "2026-02-15T11:07:05Z",
+    "historyLength": 13,
+    "stateTransitionCount": 8,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-4002",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8524",
+      "patient": {
+        "patientId": "P-84888",
+        "firstName": "Ethan",
+        "lastName": "Jones",
+        "dateOfBirth": "1991-05-12",
+        "healthCardNumber": "XXXX-XXX-410"
+      },
+      "provider": {
+        "providerId": "DR-1011",
+        "name": "Dr. Hassan Ali",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-13",
+        "scheduledTime": "15:45:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-4002",
+          "name": "St. Paul's Hospital",
+          "address": "1081 Burrard St, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-71276-20260215T0000",
+      "runId": "6769c370-7600-44e8-b07e-46f7f37943d2"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T11:09:26Z",
+    "closeTime": "2026-02-15T11:16:16Z",
+    "executionTime": "2026-02-15T11:09:26Z",
+    "historyLength": 23,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3807",
+      "patient": {
+        "patientId": "P-71276",
+        "firstName": "Hiroshi",
+        "lastName": "MacDonald",
+        "dateOfBirth": "1973-03-18",
+        "healthCardNumber": "XXXX-XXX-854"
+      },
+      "provider": {
+        "providerId": "DR-1001",
+        "name": "Dr. Amir Patel",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-02-21",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-53674-20260215T0000",
+      "runId": "96d69740-2cfe-489e-9803-7af87fab8aa4"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T11:13:54Z",
+    "closeTime": "2026-02-15T11:21:34Z",
+    "executionTime": "2026-02-15T11:13:54Z",
+    "historyLength": 23,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "MRI",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5998",
+      "patient": {
+        "patientId": "P-53674",
+        "firstName": "Sakura",
+        "lastName": "Roy",
+        "dateOfBirth": "1979-03-17",
+        "healthCardNumber": "XXXX-XXX-589"
+      },
+      "provider": {
+        "providerId": "DR-1003",
+        "name": "Dr. James Wilson",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "MRI",
+        "scheduledDate": "2026-03-06",
+        "scheduledTime": "14:45:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-56619-20260215T0000",
+      "runId": "3059ae62-2c29-49fe-8ea5-67fb6084a63d"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T11:18:29Z",
+    "closeTime": "2026-02-15T11:26:55Z",
+    "executionTime": "2026-02-15T11:18:29Z",
+    "historyLength": 23,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-1002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8836",
+      "patient": {
+        "patientId": "P-56619",
+        "firstName": "Jacob",
+        "lastName": "Taylor",
+        "dateOfBirth": "1945-09-07",
+        "healthCardNumber": "XXXX-XXX-953"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-02-21",
+        "scheduledTime": "08:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1002",
+          "name": "Sunnybrook Health Sciences Centre",
+          "address": "2075 Bayview Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-89012-20260215T0000",
+      "runId": "fbf0ea00-2512-4714-8cb2-06009f1868f7"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T11:59:18Z",
+    "closeTime": "2026-02-15T12:02:50Z",
+    "executionTime": "2026-02-15T11:59:18Z",
+    "historyLength": 11,
+    "stateTransitionCount": 11,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1260",
+      "patient": {
+        "patientId": "P-89012",
+        "firstName": "Emma",
+        "lastName": "Williams",
+        "dateOfBirth": "1940-08-03",
+        "healthCardNumber": "XXXX-XXX-158"
+      },
+      "provider": {
+        "providerId": "DR-1012",
+        "name": "Dr. Catherine O'Brien",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-03-06",
+        "scheduledTime": "09:30:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-39709-20260215T0000",
+      "runId": "bda38fbe-1df5-476b-b5ad-f57499b355f3"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T12:06:05Z",
+    "closeTime": "2026-02-15T12:10:47Z",
+    "executionTime": "2026-02-15T12:06:05Z",
+    "historyLength": 13,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7270",
+      "patient": {
+        "patientId": "P-39709",
+        "firstName": "Noah",
+        "lastName": "Lee",
+        "dateOfBirth": "1993-10-04",
+        "healthCardNumber": "XXXX-XXX-602"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-05",
+        "scheduledTime": "16:30:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "waitlistpromotion-p-64353-20260215T0000",
+      "runId": "3005fac6-5da6-4aa6-8ef7-91e4bac881f6"
+    },
+    "type": {
+      "name": "WaitlistPromotionWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T12:17:06Z",
+    "closeTime": "2026-02-15T12:18:41Z",
+    "executionTime": "2026-02-15T12:17:06Z",
+    "historyLength": 16,
+    "stateTransitionCount": 8,
+    "taskQueue": "waitlist-management-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7513",
+      "patient": {
+        "patientId": "P-64353",
+        "firstName": "Olivia",
+        "lastName": "Davis",
+        "dateOfBirth": "1964-11-24",
+        "healthCardNumber": "XXXX-XXX-988"
+      },
+      "provider": {
+        "providerId": "DR-1007",
+        "name": "Dr. Robert Nguyen",
+        "specialty": "Neurology"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-17",
+        "scheduledTime": "08:15:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "waitlistpromotion-p-19467-20260215T0000",
+      "runId": "f4b0f1eb-9c5e-49f4-bee2-c9590d7ddd4c"
+    },
+    "type": {
+      "name": "WaitlistPromotionWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T12:43:17Z",
+    "closeTime": "2026-02-15T12:49:18Z",
+    "executionTime": "2026-02-15T12:43:17Z",
+    "historyLength": 27,
+    "stateTransitionCount": 4,
+    "taskQueue": "waitlist-management-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9550",
+      "patient": {
+        "patientId": "P-19467",
+        "firstName": "Omar",
+        "lastName": "Park",
+        "dateOfBirth": "2004-09-28",
+        "healthCardNumber": "XXXX-XXX-172"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-03-08",
+        "scheduledTime": "15:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-80237-20260215T0000",
+      "runId": "5ca0a88e-533d-475d-ae6c-00c5b9a71745"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T12:46:04Z",
+    "closeTime": "2026-02-15T12:47:31Z",
+    "executionTime": "2026-02-15T12:46:04Z",
+    "historyLength": 10,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8537",
+      "patient": {
+        "patientId": "P-80237",
+        "firstName": "Zara",
+        "lastName": "Taylor",
+        "dateOfBirth": "1985-01-20",
+        "healthCardNumber": "XXXX-XXX-867"
+      },
+      "provider": {
+        "providerId": "DR-1002",
+        "name": "Dr. Sarah Chen",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-27",
+        "scheduledTime": "15:30:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-57760-20260215T0000",
+      "runId": "e151635e-5681-4321-8413-cde03dd39e1b"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T12:58:50Z",
+    "closeTime": "2026-02-15T13:02:06Z",
+    "executionTime": "2026-02-15T12:58:50Z",
+    "historyLength": 21,
+    "stateTransitionCount": 7,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2603",
+      "patient": {
+        "patientId": "P-57760",
+        "firstName": "Amelia",
+        "lastName": "Kim",
+        "dateOfBirth": "1968-07-11",
+        "healthCardNumber": "XXXX-XXX-254"
+      },
+      "provider": {
+        "providerId": "DR-1011",
+        "name": "Dr. Hassan Ali",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-02-24",
+        "scheduledTime": "14:15:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-11363-20260215T0000",
+      "runId": "bcd83480-0aeb-4954-829a-b8f562828be2"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T13:18:53Z",
+    "closeTime": "2026-02-15T13:22:02Z",
+    "executionTime": "2026-02-15T13:18:53Z",
+    "historyLength": 8,
+    "stateTransitionCount": 11,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3755",
+      "patient": {
+        "patientId": "P-11363",
+        "firstName": "Yuki",
+        "lastName": "Campbell",
+        "dateOfBirth": "1957-12-21",
+        "healthCardNumber": "XXXX-XXX-137"
+      },
+      "provider": {
+        "providerId": "DR-1003",
+        "name": "Dr. James Wilson",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-02-26",
+        "scheduledTime": "13:00:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-65837-20260215T0000",
+      "runId": "94f89c0c-9e42-4db6-bb61-2304544baf9c"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T13:27:58Z",
+    "closeTime": "2026-02-15T13:32:42Z",
+    "executionTime": "2026-02-15T13:27:58Z",
+    "historyLength": 10,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2453",
+      "patient": {
+        "patientId": "P-65837",
+        "firstName": "Fatima",
+        "lastName": "Kumar",
+        "dateOfBirth": "1941-10-08",
+        "healthCardNumber": "XXXX-XXX-399"
+      },
+      "provider": {
+        "providerId": "DR-1014",
+        "name": "Dr. Anne-Marie Tremblay",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-05",
+        "scheduledTime": "11:15:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-51110-20260215T0000",
+      "runId": "edf624bd-25a3-4fce-a729-8641c8f2cd0d"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T13:37:58Z",
+    "closeTime": "2026-02-15T13:47:31Z",
+    "executionTime": "2026-02-15T13:37:58Z",
+    "historyLength": 20,
+    "stateTransitionCount": 11,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5160",
+      "patient": {
+        "patientId": "P-51110",
+        "firstName": "Mei",
+        "lastName": "Roy",
+        "dateOfBirth": "1971-07-28",
+        "healthCardNumber": "XXXX-XXX-201"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-04",
+        "scheduledTime": "09:00:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-84513-20260215T0000",
+      "runId": "8d6bced3-765f-4a99-9c8c-f6f4bd4fd600"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T13:54:23Z",
+    "closeTime": "2026-02-15T14:00:00Z",
+    "executionTime": "2026-02-15T13:54:23Z",
+    "historyLength": 10,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-2001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8095",
+      "patient": {
+        "patientId": "P-84513",
+        "firstName": "Lucas",
+        "lastName": "Thomas",
+        "dateOfBirth": "2007-10-05",
+        "healthCardNumber": "XXXX-XXX-558"
+      },
+      "provider": {
+        "providerId": "DR-1006",
+        "name": "Dr. Emily Thompson",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-10",
+        "scheduledTime": "15:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-2001",
+          "name": "Ottawa Hospital - Civic Campus",
+          "address": "1053 Carling Ave, Ottawa, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "followupscheduler-p-28461-20260215T0000",
+      "runId": "b3194973-c19d-4e85-9dbb-362cb928bd30"
+    },
+    "type": {
+      "name": "FollowUpSchedulerWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T14:11:42Z",
+    "closeTime": "2026-02-15T14:20:53Z",
+    "executionTime": "2026-02-15T14:11:42Z",
+    "historyLength": 21,
+    "stateTransitionCount": 12,
+    "taskQueue": "follow-up-scheduler-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "MRI",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-4942",
+      "patient": {
+        "patientId": "P-28461",
+        "firstName": "Ella",
+        "lastName": "Li",
+        "dateOfBirth": "1956-05-01",
+        "healthCardNumber": "XXXX-XXX-660"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "MRI",
+        "scheduledDate": "2026-03-16",
+        "scheduledTime": "16:30:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-46868-20260215T0000",
+      "runId": "27debf06-5691-43fa-b763-cba088712660"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T14:32:43Z",
+    "closeTime": "2026-02-15T14:39:09Z",
+    "executionTime": "2026-02-15T14:32:43Z",
+    "historyLength": 30,
+    "stateTransitionCount": 4,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3350",
+      "patient": {
+        "patientId": "P-46868",
+        "firstName": "Chloe",
+        "lastName": "Li",
+        "dateOfBirth": "1943-01-14",
+        "healthCardNumber": "XXXX-XXX-522"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-02-17",
+        "scheduledTime": "13:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "waitlistpromotion-p-19601-20260215T0000",
+      "runId": "3a20511e-0209-4dc2-be2c-9fdb9bac3286"
+    },
+    "type": {
+      "name": "WaitlistPromotionWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T14:33:05Z",
+    "closeTime": "2026-02-15T14:35:06Z",
+    "executionTime": "2026-02-15T14:33:05Z",
+    "historyLength": 26,
+    "stateTransitionCount": 15,
+    "taskQueue": "waitlist-management-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "MRI",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2682",
+      "patient": {
+        "patientId": "P-19601",
+        "firstName": "Aria",
+        "lastName": "Nguyen",
+        "dateOfBirth": "1980-02-17",
+        "healthCardNumber": "XXXX-XXX-731"
+      },
+      "provider": {
+        "providerId": "DR-1001",
+        "name": "Dr. Amir Patel",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "MRI",
+        "scheduledDate": "2026-03-05",
+        "scheduledTime": "11:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-27385-20260215T0000",
+      "runId": "ab368622-5d31-403e-b875-ac7a5f3453ba"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T14:35:52Z",
+    "closeTime": "2026-02-15T14:44:08Z",
+    "executionTime": "2026-02-15T14:35:52Z",
+    "historyLength": 28,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9989",
+      "patient": {
+        "patientId": "P-27385",
+        "firstName": "Elijah",
+        "lastName": "Ali",
+        "dateOfBirth": "1970-09-07",
+        "healthCardNumber": "XXXX-XXX-405"
+      },
+      "provider": {
+        "providerId": "DR-1012",
+        "name": "Dr. Catherine O'Brien",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-02-28",
+        "scheduledTime": "16:30:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-47185-20260215T0000",
+      "runId": "12a9da63-04f9-4a7c-86a9-bf2fb86e60a6"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T15:03:05Z",
+    "closeTime": "2026-02-15T15:09:17Z",
+    "executionTime": "2026-02-15T15:03:05Z",
+    "historyLength": 23,
+    "stateTransitionCount": 4,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2116",
+      "patient": {
+        "patientId": "P-47185",
+        "firstName": "Mason",
+        "lastName": "Roy",
+        "dateOfBirth": "1998-08-20",
+        "healthCardNumber": "XXXX-XXX-960"
+      },
+      "provider": {
+        "providerId": "DR-1012",
+        "name": "Dr. Catherine O'Brien",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-02-24",
+        "scheduledTime": "16:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-23142-20260215T0000",
+      "runId": "750a8b32-c327-4a61-8fbb-2d1ff5509e75"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T15:20:46Z",
+    "closeTime": "2026-02-15T15:26:16Z",
+    "executionTime": "2026-02-15T15:20:46Z",
+    "historyLength": 20,
+    "stateTransitionCount": 13,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-2001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8340",
+      "patient": {
+        "patientId": "P-23142",
+        "firstName": "Harper",
+        "lastName": "Kim",
+        "dateOfBirth": "1998-08-23",
+        "healthCardNumber": "XXXX-XXX-287"
+      },
+      "provider": {
+        "providerId": "DR-1014",
+        "name": "Dr. Anne-Marie Tremblay",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-03-14",
+        "scheduledTime": "08:00:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-2001",
+          "name": "Ottawa Hospital - Civic Campus",
+          "address": "1053 Carling Ave, Ottawa, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-87940-20260215T0000",
+      "runId": "2b186464-f991-4772-bac3-df07838a6969"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T15:56:40Z",
+    "closeTime": "2026-02-15T16:02:28Z",
+    "executionTime": "2026-02-15T15:56:40Z",
+    "historyLength": 30,
+    "stateTransitionCount": 11,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3719",
+      "patient": {
+        "patientId": "P-87940",
+        "firstName": "Elijah",
+        "lastName": "Rodriguez",
+        "dateOfBirth": "1958-04-21",
+        "healthCardNumber": "XXXX-XXX-320"
+      },
+      "provider": {
+        "providerId": "DR-1015",
+        "name": "Dr. Kevin Zhang",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-03-01",
+        "scheduledTime": "13:15:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-97847-20260215T0000",
+      "runId": "61826521-93da-4c6c-8b51-2512a80f2756"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T16:57:08Z",
+    "closeTime": "2026-02-15T17:04:05Z",
+    "executionTime": "2026-02-15T16:57:08Z",
+    "historyLength": 9,
+    "stateTransitionCount": 8,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3868",
+      "patient": {
+        "patientId": "P-97847",
+        "firstName": "Logan",
+        "lastName": "Cote",
+        "dateOfBirth": "2004-10-12",
+        "healthCardNumber": "XXXX-XXX-699"
+      },
+      "provider": {
+        "providerId": "DR-1003",
+        "name": "Dr. James Wilson",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-27",
+        "scheduledTime": "13:45:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-49105-20260215T0000",
+      "runId": "9337230a-675c-435d-9f77-c17aebdc843a"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T16:58:32Z",
+    "closeTime": "2026-02-15T17:01:11Z",
+    "executionTime": "2026-02-15T16:58:32Z",
+    "historyLength": 17,
+    "stateTransitionCount": 9,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-2001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7114",
+      "patient": {
+        "patientId": "P-49105",
+        "firstName": "Evelyn",
+        "lastName": "Smith",
+        "dateOfBirth": "1964-02-09",
+        "healthCardNumber": "XXXX-XXX-204"
+      },
+      "provider": {
+        "providerId": "DR-1001",
+        "name": "Dr. Amir Patel",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-02-16",
+        "scheduledTime": "13:15:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-2001",
+          "name": "Ottawa Hospital - Civic Campus",
+          "address": "1053 Carling Ave, Ottawa, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-95253-20260215T0000",
+      "runId": "d912c763-6a76-4c35-878c-ec9afa10588a"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:16:35Z",
+    "closeTime": "2026-02-15T17:22:34Z",
+    "executionTime": "2026-02-15T17:16:35Z",
+    "historyLength": 13,
+    "stateTransitionCount": 5,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1972",
+      "patient": {
+        "patientId": "P-95253",
+        "firstName": "Olivia",
+        "lastName": "Kim",
+        "dateOfBirth": "1990-07-08",
+        "healthCardNumber": "XXXX-XXX-311"
+      },
+      "provider": {
+        "providerId": "DR-1002",
+        "name": "Dr. Sarah Chen",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-12",
+        "scheduledTime": "08:00:00",
+        "durationMinutes": 90,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-42962-20260215T0000",
+      "runId": "658f3110-965f-4a58-a952-71e77d49f629"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:17:27Z",
+    "closeTime": "2026-02-15T17:26:00Z",
+    "executionTime": "2026-02-15T17:17:27Z",
+    "historyLength": 9,
+    "stateTransitionCount": 5,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5239",
+      "patient": {
+        "patientId": "P-42962",
+        "firstName": "Chloe",
+        "lastName": "Fraser",
+        "dateOfBirth": "2003-02-11",
+        "healthCardNumber": "XXXX-XXX-326"
+      },
+      "provider": {
+        "providerId": "DR-1002",
+        "name": "Dr. Sarah Chen",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-02-26",
+        "scheduledTime": "09:45:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-37165-20260215T0000",
+      "runId": "1b2afd81-9a4c-48f1-b5b4-c299088f2a2d"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:19:14Z",
+    "closeTime": "2026-02-15T17:21:01Z",
+    "executionTime": "2026-02-15T17:19:14Z",
+    "historyLength": 11,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5177",
+      "patient": {
+        "patientId": "P-37165",
+        "firstName": "Olivia",
+        "lastName": "Thompson",
+        "dateOfBirth": "2005-11-24",
+        "healthCardNumber": "XXXX-XXX-636"
+      },
+      "provider": {
+        "providerId": "DR-1006",
+        "name": "Dr. Emily Thompson",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-03-09",
+        "scheduledTime": "08:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-94593-20260215T0000",
+      "runId": "bb58bd48-9edd-42a7-841d-0cf8a87cf065"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:38:16Z",
+    "closeTime": "2026-02-15T17:43:16Z",
+    "executionTime": "2026-02-15T17:38:16Z",
+    "historyLength": 22,
+    "stateTransitionCount": 5,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1877",
+      "patient": {
+        "patientId": "P-94593",
+        "firstName": "Ethan",
+        "lastName": "Smith",
+        "dateOfBirth": "1988-12-27",
+        "healthCardNumber": "XXXX-XXX-462"
+      },
+      "provider": {
+        "providerId": "DR-1002",
+        "name": "Dr. Sarah Chen",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-03-09",
+        "scheduledTime": "08:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-91865-20260215T0000",
+      "runId": "06abacae-0a10-4780-b43d-0f954ce8909a"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:41:31Z",
+    "closeTime": "2026-02-15T17:44:18Z",
+    "executionTime": "2026-02-15T17:41:31Z",
+    "historyLength": 23,
+    "stateTransitionCount": 12,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3841",
+      "patient": {
+        "patientId": "P-91865",
+        "firstName": "Ava",
+        "lastName": "Singh",
+        "dateOfBirth": "1958-02-21",
+        "healthCardNumber": "XXXX-XXX-352"
+      },
+      "provider": {
+        "providerId": "DR-1008",
+        "name": "Dr. Lisa Dubois",
+        "specialty": "Gastroenterology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-02-25",
+        "scheduledTime": "08:15:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "waitlistpromotion-p-64427-20260215T0000",
+      "runId": "a0732a2a-c2da-457a-acdc-41ddbdf63783"
+    },
+    "type": {
+      "name": "WaitlistPromotionWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:45:49Z",
+    "closeTime": "2026-02-15T17:48:55Z",
+    "executionTime": "2026-02-15T17:45:49Z",
+    "historyLength": 10,
+    "stateTransitionCount": 6,
+    "taskQueue": "waitlist-management-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-1001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8304",
+      "patient": {
+        "patientId": "P-64427",
+        "firstName": "Benjamin",
+        "lastName": "Kumar",
+        "dateOfBirth": "1948-09-10",
+        "healthCardNumber": "XXXX-XXX-101"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-03-03",
+        "scheduledTime": "14:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-1001",
+          "name": "Toronto General Hospital",
+          "address": "200 Elizabeth St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "waitlistpromotion-p-98209-20260215T0000",
+      "runId": "cc099fea-15b5-4b4a-b28b-bd69cb855eb6"
+    },
+    "type": {
+      "name": "WaitlistPromotionWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T17:57:26Z",
+    "closeTime": "2026-02-15T18:03:57Z",
+    "executionTime": "2026-02-15T17:57:26Z",
+    "historyLength": 23,
+    "stateTransitionCount": 9,
+    "taskQueue": "waitlist-management-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2311",
+      "patient": {
+        "patientId": "P-98209",
+        "firstName": "Michael",
+        "lastName": "Thomas",
+        "dateOfBirth": "1968-01-08",
+        "healthCardNumber": "XXXX-XXX-881"
+      },
+      "provider": {
+        "providerId": "DR-1001",
+        "name": "Dr. Amir Patel",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-09",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-16434-20260215T0000",
+      "runId": "5c8fd183-b1e3-4d4a-9ab2-22b182da9308"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T18:08:14Z",
+    "closeTime": "2026-02-15T18:15:52Z",
+    "executionTime": "2026-02-15T18:08:14Z",
+    "historyLength": 25,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-6846",
+      "patient": {
+        "patientId": "P-16434",
+        "firstName": "Leila",
+        "lastName": "Rodriguez",
+        "dateOfBirth": "1968-08-19",
+        "healthCardNumber": "XXXX-XXX-895"
+      },
+      "provider": {
+        "providerId": "DR-1011",
+        "name": "Dr. Hassan Ali",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-03-15",
+        "scheduledTime": "10:00:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-16327-20260215T0000",
+      "runId": "3005ae07-6ded-418b-a058-0403566b5cf3"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Failed",
+    "startTime": "2026-02-15T18:23:05Z",
+    "closeTime": "2026-02-15T18:23:14Z",
+    "executionTime": "2026-02-15T18:23:05Z",
+    "historyLength": 24,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3276",
+      "patient": {
+        "patientId": "P-16327",
+        "firstName": "Wei",
+        "lastName": "Jackson",
+        "dateOfBirth": "1973-07-12",
+        "healthCardNumber": "XXXX-XXX-532"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-03-10",
+        "scheduledTime": "16:00:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": null,
+        "confirmationMethod": null,
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      },
+      "failureReason": "Patient health card validation failed"
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "followupscheduler-p-77191-20260215T0000",
+      "runId": "850c138e-0342-48bf-abd3-3cec7e73e9c0"
+    },
+    "type": {
+      "name": "FollowUpSchedulerWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T18:36:27Z",
+    "closeTime": "2026-02-15T18:39:16Z",
+    "executionTime": "2026-02-15T18:36:27Z",
+    "historyLength": 26,
+    "stateTransitionCount": 11,
+    "taskQueue": "follow-up-scheduler-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3976",
+      "patient": {
+        "patientId": "P-77191",
+        "firstName": "Mason",
+        "lastName": "Gagnon",
+        "dateOfBirth": "1941-09-10",
+        "healthCardNumber": "XXXX-XXX-975"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-02-21",
+        "scheduledTime": "10:15:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-38662-20260215T0000",
+      "runId": "d9d89974-c8bd-4d51-8a3c-f326c1859bc0"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T18:56:28Z",
+    "closeTime": "2026-02-15T19:01:58Z",
+    "executionTime": "2026-02-15T18:56:28Z",
+    "historyLength": 14,
+    "stateTransitionCount": 8,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-2001",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3946",
+      "patient": {
+        "patientId": "P-38662",
+        "firstName": "Sophia",
+        "lastName": "Chen",
+        "dateOfBirth": "1989-03-22",
+        "healthCardNumber": "XXXX-XXX-491"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-03-03",
+        "scheduledTime": "14:00:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-2001",
+          "name": "Ottawa Hospital - Civic Campus",
+          "address": "1053 Carling Ave, Ottawa, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-58570-20260215T0000",
+      "runId": "cff6d053-8427-4c10-a353-03524a0a53c2"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T19:10:34Z",
+    "closeTime": "2026-02-15T19:14:57Z",
+    "executionTime": "2026-02-15T19:10:34Z",
+    "historyLength": 18,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "MRI",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3628",
+      "patient": {
+        "patientId": "P-58570",
+        "firstName": "Sophia",
+        "lastName": "Lee",
+        "dateOfBirth": "1979-03-23",
+        "healthCardNumber": "XXXX-XXX-496"
+      },
+      "provider": {
+        "providerId": "DR-1013",
+        "name": "Dr. Raj Sharma",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "MRI",
+        "scheduledDate": "2026-03-15",
+        "scheduledTime": "08:30:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-65441-20260215T0000",
+      "runId": "fecfc63a-474d-4acf-85f4-a6739b76e8f5"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T19:15:37Z",
+    "closeTime": "2026-02-15T19:20:00Z",
+    "executionTime": "2026-02-15T19:15:37Z",
+    "historyLength": 28,
+    "stateTransitionCount": 6,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2714",
+      "patient": {
+        "patientId": "P-65441",
+        "firstName": "Abigail",
+        "lastName": "Sharma",
+        "dateOfBirth": "1978-05-10",
+        "healthCardNumber": "XXXX-XXX-210"
+      },
+      "provider": {
+        "providerId": "DR-1014",
+        "name": "Dr. Anne-Marie Tremblay",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-03-02",
+        "scheduledTime": "11:15:00",
+        "durationMinutes": 45,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-44818-20260215T0000",
+      "runId": "1268aa64-1ef3-48f4-98e5-ac1832940a67"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T19:29:25Z",
+    "closeTime": "2026-02-15T19:31:25Z",
+    "executionTime": "2026-02-15T19:29:25Z",
+    "historyLength": 27,
+    "stateTransitionCount": 10,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-6576",
+      "patient": {
+        "patientId": "P-44818",
+        "firstName": "Charlotte",
+        "lastName": "Miller",
+        "dateOfBirth": "1995-12-02",
+        "healthCardNumber": "XXXX-XXX-822"
+      },
+      "provider": {
+        "providerId": "DR-1009",
+        "name": "Dr. Michael Brown",
+        "specialty": "Oncology"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-02-25",
+        "scheduledTime": "08:00:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-29708-20260215T0000",
+      "runId": "7d0d017e-8fb0-4cc6-87ea-2fb4467caa76"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T19:41:04Z",
+    "closeTime": "2026-02-15T19:50:31Z",
+    "executionTime": "2026-02-15T19:41:04Z",
+    "historyLength": 23,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2370",
+      "patient": {
+        "patientId": "P-29708",
+        "firstName": "Oliver",
+        "lastName": "Brown",
+        "dateOfBirth": "1942-01-04",
+        "healthCardNumber": "XXXX-XXX-204"
+      },
+      "provider": {
+        "providerId": "DR-1014",
+        "name": "Dr. Anne-Marie Tremblay",
+        "specialty": "Dermatology"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-02-18",
+        "scheduledTime": "14:30:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-43973-20260215T0000",
+      "runId": "18c22f38-d42a-4725-b5a0-2abbf9cb9573"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T19:51:08Z",
+    "closeTime": "2026-02-15T19:58:24Z",
+    "executionTime": "2026-02-15T19:51:08Z",
+    "historyLength": 14,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5867",
+      "patient": {
+        "patientId": "P-43973",
+        "firstName": "Jacob",
+        "lastName": "Zhang",
+        "dateOfBirth": "1989-10-11",
+        "healthCardNumber": "XXXX-XXX-114"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-03-07",
+        "scheduledTime": "16:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-48170-20260215T0000",
+      "runId": "b413a5f7-57af-4166-80ae-08776f0ef092"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:03:22Z",
+    "closeTime": "2026-02-15T20:05:43Z",
+    "executionTime": "2026-02-15T20:03:22Z",
+    "historyLength": 28,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-1705",
+      "patient": {
+        "patientId": "P-48170",
+        "firstName": "Emma",
+        "lastName": "Singh",
+        "dateOfBirth": "1985-04-22",
+        "healthCardNumber": "XXXX-XXX-434"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-02-18",
+        "scheduledTime": "13:15:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-29368-20260215T0000",
+      "runId": "e595475a-3ab6-43e9-a493-81a39e14782c"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:03:52Z",
+    "closeTime": "2026-02-15T20:07:51Z",
+    "executionTime": "2026-02-15T20:03:52Z",
+    "historyLength": 22,
+    "stateTransitionCount": 7,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "Dermatology",
+      "FacilityId": "FAC-3002",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-5980",
+      "patient": {
+        "patientId": "P-29368",
+        "firstName": "Mason",
+        "lastName": "White",
+        "dateOfBirth": "1989-07-17",
+        "healthCardNumber": "XXXX-XXX-681"
+      },
+      "provider": {
+        "providerId": "DR-1001",
+        "name": "Dr. Amir Patel",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "Dermatology",
+        "scheduledDate": "2026-03-17",
+        "scheduledTime": "16:30:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3002",
+          "name": "Centre hospitalier de l'Universite de Montreal",
+          "address": "1051 Sanguinet St, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-34197-20260215T0000",
+      "runId": "71d42676-d1f0-452a-9838-8ef6d5c4b25a"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:05:14Z",
+    "closeTime": "2026-02-15T20:07:01Z",
+    "executionTime": "2026-02-15T20:05:14Z",
+    "historyLength": 22,
+    "stateTransitionCount": 7,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2968",
+      "patient": {
+        "patientId": "P-34197",
+        "firstName": "Alexander",
+        "lastName": "Campbell",
+        "dateOfBirth": "2008-05-24",
+        "healthCardNumber": "XXXX-XXX-511"
+      },
+      "provider": {
+        "providerId": "DR-1005",
+        "name": "Dr. David Kim",
+        "specialty": "Orthopedics"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-03-09",
+        "scheduledTime": "13:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-86465-20260215T0000",
+      "runId": "7674672a-5dce-4172-a3e8-3587f261321d"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:10:34Z",
+    "closeTime": "2026-02-15T20:19:34Z",
+    "executionTime": "2026-02-15T20:10:34Z",
+    "historyLength": 29,
+    "stateTransitionCount": 10,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8951",
+      "patient": {
+        "patientId": "P-86465",
+        "firstName": "Sophia",
+        "lastName": "Roy",
+        "dateOfBirth": "1975-11-21",
+        "healthCardNumber": "XXXX-XXX-768"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-11",
+        "scheduledTime": "15:45:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-27684-20260215T0000",
+      "runId": "e5906048-4242-4461-bfd3-1b57b8ec76b0"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:21:30Z",
+    "closeTime": "2026-02-15T20:23:32Z",
+    "executionTime": "2026-02-15T20:21:30Z",
+    "historyLength": 24,
+    "stateTransitionCount": 13,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Specialist Consultation",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-6153",
+      "patient": {
+        "patientId": "P-27684",
+        "firstName": "Wei",
+        "lastName": "Anderson",
+        "dateOfBirth": "2000-07-04",
+        "healthCardNumber": "XXXX-XXX-594"
+      },
+      "provider": {
+        "providerId": "DR-1008",
+        "name": "Dr. Lisa Dubois",
+        "specialty": "Gastroenterology"
+      },
+      "appointment": {
+        "type": "Specialist Consultation",
+        "scheduledDate": "2026-03-13",
+        "scheduledTime": "15:15:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-70411-20260215T0000",
+      "runId": "6af12a51-dba0-4a25-8ad2-cb015fbe61d2"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:22:13Z",
+    "closeTime": "2026-02-15T20:27:46Z",
+    "executionTime": "2026-02-15T20:22:13Z",
+    "historyLength": 29,
+    "stateTransitionCount": 11,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3721",
+      "patient": {
+        "patientId": "P-70411",
+        "firstName": "Sakura",
+        "lastName": "Davis",
+        "dateOfBirth": "1983-06-23",
+        "healthCardNumber": "XXXX-XXX-774"
+      },
+      "provider": {
+        "providerId": "DR-1007",
+        "name": "Dr. Robert Nguyen",
+        "specialty": "Neurology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-01",
+        "scheduledTime": "08:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-48215-20260215T0000",
+      "runId": "c3371380-c5bb-4261-8146-95bc59382295"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:27:01Z",
+    "closeTime": "2026-02-15T20:31:07Z",
+    "executionTime": "2026-02-15T20:27:01Z",
+    "historyLength": 30,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Cardiology",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3537",
+      "patient": {
+        "patientId": "P-48215",
+        "firstName": "Ella",
+        "lastName": "Lee",
+        "dateOfBirth": "1949-12-20",
+        "healthCardNumber": "XXXX-XXX-288"
+      },
+      "provider": {
+        "providerId": "DR-1013",
+        "name": "Dr. Raj Sharma",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Cardiology",
+        "scheduledDate": "2026-03-09",
+        "scheduledTime": "09:30:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-43325-20260215T0000",
+      "runId": "c224c57f-3375-4abe-b036-335a1c7be884"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:34:26Z",
+    "closeTime": "2026-02-15T20:42:15Z",
+    "executionTime": "2026-02-15T20:34:26Z",
+    "historyLength": 20,
+    "stateTransitionCount": 15,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Primary Care Visit",
+      "FacilityId": "FAC-1003",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-2694",
+      "patient": {
+        "patientId": "P-43325",
+        "firstName": "Sophia",
+        "lastName": "Kumar",
+        "dateOfBirth": "1981-03-23",
+        "healthCardNumber": "XXXX-XXX-566"
+      },
+      "provider": {
+        "providerId": "DR-1006",
+        "name": "Dr. Emily Thompson",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "Primary Care Visit",
+        "scheduledDate": "2026-03-17",
+        "scheduledTime": "15:15:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-1003",
+          "name": "Mount Sinai Hospital",
+          "address": "600 University Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-11587-20260215T0000",
+      "runId": "a4be9c79-f02c-4ab2-aa2f-a97959909f9b"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:39:54Z",
+    "closeTime": "2026-02-15T20:47:02Z",
+    "executionTime": "2026-02-15T20:39:54Z",
+    "historyLength": 11,
+    "stateTransitionCount": 5,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Ultrasound",
+      "FacilityId": "FAC-2002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-8712",
+      "patient": {
+        "patientId": "P-11587",
+        "firstName": "Sakura",
+        "lastName": "Sharma",
+        "dateOfBirth": "1963-08-25",
+        "healthCardNumber": "XXXX-XXX-616"
+      },
+      "provider": {
+        "providerId": "DR-1013",
+        "name": "Dr. Raj Sharma",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Ultrasound",
+        "scheduledDate": "2026-03-10",
+        "scheduledTime": "15:00:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-2002",
+          "name": "Kingston General Hospital",
+          "address": "76 Stuart St, Kingston, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "rescheduleappointment-p-94050-20260215T0000",
+      "runId": "b4a21157-d80c-4fb2-a375-e161503139b4"
+    },
+    "type": {
+      "name": "RescheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:41:23Z",
+    "closeTime": "2026-02-15T20:42:49Z",
+    "executionTime": "2026-02-15T20:41:23Z",
+    "historyLength": 22,
+    "stateTransitionCount": 10,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-1004",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7887",
+      "patient": {
+        "patientId": "P-94050",
+        "firstName": "Logan",
+        "lastName": "Fraser",
+        "dateOfBirth": "1979-10-10",
+        "healthCardNumber": "XXXX-XXX-542"
+      },
+      "provider": {
+        "providerId": "DR-1011",
+        "name": "Dr. Hassan Ali",
+        "specialty": "Radiology"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-08",
+        "scheduledTime": "14:15:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-1004",
+          "name": "St. Michael's Hospital",
+          "address": "36 Queen St E, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-92892-20260215T0000",
+      "runId": "054fef07-ae13-4534-b01d-b34452e444ff"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T20:58:38Z",
+    "closeTime": "2026-02-15T21:08:21Z",
+    "executionTime": "2026-02-15T20:58:38Z",
+    "historyLength": 11,
+    "stateTransitionCount": 8,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-1002",
+      "TenantId": "TEN-001",
+      "TenantName": "Ontario Health Network"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3882",
+      "patient": {
+        "patientId": "P-92892",
+        "firstName": "Aria",
+        "lastName": "Dubois",
+        "dateOfBirth": "1940-07-18",
+        "healthCardNumber": "XXXX-XXX-324"
+      },
+      "provider": {
+        "providerId": "DR-1010",
+        "name": "Dr. Jennifer Lee",
+        "specialty": "Physical Therapy"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-02-17",
+        "scheduledTime": "16:45:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-1002",
+          "name": "Sunnybrook Health Sciences Centre",
+          "address": "2075 Bayview Ave, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "SMS",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-001",
+        "name": "Ontario Health Network"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "referralintake-p-32732-20260215T0000",
+      "runId": "7686942a-d287-467c-8640-2df390a4a735"
+    },
+    "type": {
+      "name": "ReferralIntakeWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T21:13:00Z",
+    "closeTime": "2026-02-15T21:20:29Z",
+    "executionTime": "2026-02-15T21:13:00Z",
+    "historyLength": 12,
+    "stateTransitionCount": 13,
+    "taskQueue": "referral-processing-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9219",
+      "patient": {
+        "patientId": "P-32732",
+        "firstName": "Benjamin",
+        "lastName": "Fraser",
+        "dateOfBirth": "1982-06-05",
+        "healthCardNumber": "XXXX-XXX-671"
+      },
+      "provider": {
+        "providerId": "DR-1008",
+        "name": "Dr. Lisa Dubois",
+        "specialty": "Gastroenterology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-02-28",
+        "scheduledTime": "08:45:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Patient Portal",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-80242-20260215T0000",
+      "runId": "05914399-b124-4028-9ce9-b217e476d597"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T21:58:39Z",
+    "closeTime": "2026-02-15T22:02:18Z",
+    "executionTime": "2026-02-15T21:58:39Z",
+    "historyLength": 20,
+    "stateTransitionCount": 13,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Quebec",
+      "AppointmentType": "X-Ray",
+      "FacilityId": "FAC-3001",
+      "TenantId": "TEN-002",
+      "TenantName": "Quebec Medical Group"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-9666",
+      "patient": {
+        "patientId": "P-80242",
+        "firstName": "Diego",
+        "lastName": "Fraser",
+        "dateOfBirth": "1963-10-10",
+        "healthCardNumber": "XXXX-XXX-902"
+      },
+      "provider": {
+        "providerId": "DR-1003",
+        "name": "Dr. James Wilson",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "X-Ray",
+        "scheduledDate": "2026-03-11",
+        "scheduledTime": "11:45:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-3001",
+          "name": "McGill University Health Centre",
+          "address": "1001 Decarie Blvd, Montreal, QC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": true
+      },
+      "tenant": {
+        "tenantId": "TEN-002",
+        "name": "Quebec Medical Group"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "cancelappointment-p-49142-20260215T0000",
+      "runId": "9ecb377f-77da-45b3-9be3-ccc0a8a7e247"
+    },
+    "type": {
+      "name": "CancelAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T22:37:45Z",
+    "closeTime": "2026-02-15T22:38:35Z",
+    "executionTime": "2026-02-15T22:37:45Z",
+    "historyLength": 25,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Alberta",
+      "AppointmentType": "Physical Therapy",
+      "FacilityId": "FAC-5001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-3528",
+      "patient": {
+        "patientId": "P-49142",
+        "firstName": "Emily",
+        "lastName": "Campbell",
+        "dateOfBirth": "2002-12-12",
+        "healthCardNumber": "XXXX-XXX-803"
+      },
+      "provider": {
+        "providerId": "DR-1013",
+        "name": "Dr. Raj Sharma",
+        "specialty": "Cardiology"
+      },
+      "appointment": {
+        "type": "Physical Therapy",
+        "scheduledDate": "2026-03-16",
+        "scheduledTime": "15:00:00",
+        "durationMinutes": 60,
+        "facility": {
+          "facilityId": "FAC-5001",
+          "name": "Foothills Medical Centre",
+          "address": "1403 29 St NW, Calgary, AB"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Email",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-42277-20260215T0000",
+      "runId": "f3ab7d44-3747-4585-a288-a6088717a110"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T22:45:00Z",
+    "closeTime": "2026-02-15T22:52:02Z",
+    "executionTime": "2026-02-15T22:45:00Z",
+    "historyLength": 19,
+    "stateTransitionCount": 14,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "British Columbia",
+      "AppointmentType": "Blood Work",
+      "FacilityId": "FAC-4001",
+      "TenantId": "TEN-003",
+      "TenantName": "Western Canada Health Alliance"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-7548",
+      "patient": {
+        "patientId": "P-42277",
+        "firstName": "Ananya",
+        "lastName": "Chen",
+        "dateOfBirth": "1958-03-05",
+        "healthCardNumber": "XXXX-XXX-840"
+      },
+      "provider": {
+        "providerId": "DR-1002",
+        "name": "Dr. Sarah Chen",
+        "specialty": "Family Medicine"
+      },
+      "appointment": {
+        "type": "Blood Work",
+        "scheduledDate": "2026-03-13",
+        "scheduledTime": "08:45:00",
+        "durationMinutes": 30,
+        "facility": {
+          "facilityId": "FAC-4001",
+          "name": "Vancouver General Hospital",
+          "address": "899 W 12th Ave, Vancouver, BC"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-003",
+        "name": "Western Canada Health Alliance"
+      }
+    }
+  },
+  {
+    "execution": {
+      "workflowId": "scheduleappointment-p-69141-20260215T0000",
+      "runId": "ce0b3468-0686-4823-9970-db6f1a68b0c4"
+    },
+    "type": {
+      "name": "ScheduleAppointmentWorkflow"
+    },
+    "status": "Completed",
+    "startTime": "2026-02-15T22:56:52Z",
+    "closeTime": "2026-02-15T23:00:16Z",
+    "executionTime": "2026-02-15T22:56:52Z",
+    "historyLength": 11,
+    "stateTransitionCount": 4,
+    "taskQueue": "appointment-scheduling-queue",
+    "memo": {},
+    "searchAttributes": {
+      "PatientRegion": "Ontario",
+      "AppointmentType": "CT Scan",
+      "FacilityId": "FAC-1005",
+      "TenantId": "TEN-004",
+      "TenantName": "GTA Imaging Partners"
+    },
+    "result": {
+      "appointmentId": "APT-20260215-4221",
+      "patient": {
+        "patientId": "P-69141",
+        "firstName": "Noah",
+        "lastName": "Cote",
+        "dateOfBirth": "1990-02-01",
+        "healthCardNumber": "XXXX-XXX-494"
+      },
+      "provider": {
+        "providerId": "DR-1006",
+        "name": "Dr. Emily Thompson",
+        "specialty": "Internal Medicine"
+      },
+      "appointment": {
+        "type": "CT Scan",
+        "scheduledDate": "2026-03-16",
+        "scheduledTime": "13:00:00",
+        "durationMinutes": 15,
+        "facility": {
+          "facilityId": "FAC-1005",
+          "name": "Women's College Hospital",
+          "address": "76 Grenville St, Toronto, ON"
+        }
+      },
+      "scheduling": {
+        "requestedDate": "2026-02-15",
+        "confirmedDate": "2026-02-15",
+        "confirmationMethod": "Phone",
+        "reminderSent": false
+      },
+      "tenant": {
+        "tenantId": "TEN-004",
+        "name": "GTA Imaging Partners"
+      }
+    }
+  }
+]
