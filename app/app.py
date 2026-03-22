@@ -5,10 +5,13 @@ FastAPI backend serving React dashboard with SQL Warehouse queries.
 
 import os
 import json
+import time
+import httpx
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 from databricks.sdk import WorkspaceClient
 from databricks import sql as dbsql
 
@@ -385,7 +388,15 @@ def get_genie_url():
     space_id = os.environ.get("GENIE_SPACE_ID", "")
     if not space_id:
         return {"url": None, "space_id": None}
-    # Resolve host from SDK config if env var is missing
+    host = _get_workspace_host()
+    url = f"{host}/explore/genie/spaces/{space_id}" if host else None
+    return {"url": url, "space_id": space_id}
+
+
+# --- Genie API Proxy ---
+
+def _get_workspace_host() -> str:
+    """Resolve the Databricks workspace host URL."""
     host = os.environ.get("DATABRICKS_HOST", "")
     if not host:
         try:
@@ -395,8 +406,131 @@ def get_genie_url():
             pass
     if host and not host.startswith("http"):
         host = f"https://{host}"
-    url = f"{host}/explore/genie/spaces/{space_id}" if host else None
-    return {"url": url, "space_id": space_id}
+    return host.rstrip("/")
+
+
+def _get_genie_headers() -> dict:
+    """Get auth headers for Genie API calls."""
+    if IS_DATABRICKS_APP:
+        w = WorkspaceClient()
+        token = w.config.authenticate()
+        if isinstance(token, dict):
+            token = token.get("Authorization", "").replace("Bearer ", "")
+    else:
+        profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+        w = WorkspaceClient(profile=profile)
+        auth = w.config.authenticate()
+        if isinstance(auth, dict):
+            token = auth.get("Authorization", "").replace("Bearer ", "")
+        else:
+            token = auth
+    return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+
+class GenieAskRequest(BaseModel):
+    question: str
+    conversation_id: str | None = None
+
+
+class GenieFollowUpRequest(BaseModel):
+    question: str
+    conversation_id: str
+
+
+@app.post("/api/genie/ask")
+def genie_ask(req: GenieAskRequest):
+    """Start a new Genie conversation or send a follow-up, poll until complete, return the answer."""
+    space_id = os.environ.get("GENIE_SPACE_ID", "")
+    if not space_id:
+        raise HTTPException(status_code=400, detail="GENIE_SPACE_ID not configured")
+
+    host = _get_workspace_host()
+    if not host:
+        raise HTTPException(status_code=500, detail="Cannot resolve workspace host")
+
+    headers = _get_genie_headers()
+    base_url = f"{host}/api/2.0/genie/spaces/{space_id}"
+
+    # Start conversation or send follow-up
+    if req.conversation_id:
+        url = f"{base_url}/conversations/{req.conversation_id}/messages"
+        payload = {"content": req.question}
+    else:
+        url = f"{base_url}/start-conversation"
+        payload = {"content": req.question}
+
+    resp = httpx.post(url, headers=headers, json=payload, timeout=30.0)
+    if resp.status_code != 200:
+        raise HTTPException(status_code=resp.status_code, detail=resp.text)
+
+    data = resp.json()
+    conversation_id = data.get("conversation_id", "")
+    message_id = data.get("message_id", "")
+
+    # Poll for completion
+    poll_url = f"{base_url}/conversations/{conversation_id}/messages/{message_id}"
+    max_polls = 30
+    for _ in range(max_polls):
+        time.sleep(2)
+        poll_resp = httpx.get(poll_url, headers=headers, timeout=30.0)
+        if poll_resp.status_code != 200:
+            continue
+        msg = poll_resp.json()
+        status = msg.get("status", "")
+        if status in ("COMPLETED", "FAILED"):
+            break
+
+    if status != "COMPLETED":
+        return {
+            "conversation_id": conversation_id,
+            "status": status,
+            "text": "The query timed out or failed. Please try again.",
+            "sql": None,
+            "data": None,
+            "columns": None,
+            "suggested_questions": [],
+        }
+
+    # Extract answer parts from attachments
+    attachments = msg.get("attachments", [])
+    text_answer = ""
+    sql_query = ""
+    query_description = ""
+    suggested_questions = []
+    attachment_id = None
+
+    for att in attachments:
+        if "text" in att:
+            text_answer = att["text"].get("content", "")
+        if "query" in att:
+            sql_query = att["query"].get("query", "")
+            query_description = att["query"].get("description", "")
+            attachment_id = att.get("attachment_id", "")
+        if "suggested_questions" in att:
+            suggested_questions = att["suggested_questions"].get("questions", [])
+
+    # Fetch query result data if there was a SQL query
+    columns = None
+    result_data = None
+    if attachment_id:
+        result_url = f"{poll_url}/query-result/{attachment_id}"
+        result_resp = httpx.get(result_url, headers=headers, timeout=30.0)
+        if result_resp.status_code == 200:
+            sr = result_resp.json().get("statement_response", {})
+            manifest = sr.get("manifest", {})
+            columns = [c["name"] for c in manifest.get("schema", {}).get("columns", [])]
+            result_data = sr.get("result", {}).get("data_array", [])
+
+    return {
+        "conversation_id": conversation_id,
+        "status": "COMPLETED",
+        "text": text_answer,
+        "description": query_description,
+        "sql": sql_query,
+        "columns": columns,
+        "data": result_data,
+        "suggested_questions": suggested_questions,
+    }
 
 
 # --- Serve React Frontend ---
