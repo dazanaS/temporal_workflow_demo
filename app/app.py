@@ -381,14 +381,22 @@ def get_invoice(
 
 @app.get("/api/genie-url")
 def get_genie_url():
-    """Return Genie Space embed URL."""
+    """Return Genie Space URL."""
     space_id = os.environ.get("GENIE_SPACE_ID", "")
     if not space_id:
-        return {"url": None}
+        return {"url": None, "space_id": None}
+    # Resolve host from SDK config if env var is missing
     host = os.environ.get("DATABRICKS_HOST", "")
+    if not host:
+        try:
+            w = WorkspaceClient()
+            host = w.config.host or ""
+        except Exception:
+            pass
     if host and not host.startswith("http"):
         host = f"https://{host}"
-    return {"url": f"{host}/genie/rooms/{space_id}"}
+    url = f"{host}/explore/genie/spaces/{space_id}" if host else None
+    return {"url": url, "space_id": space_id}
 
 
 # --- Serve React Frontend ---
