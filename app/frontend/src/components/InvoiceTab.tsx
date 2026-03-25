@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { FileText, Save } from "lucide-react";
-import type { Tenant, Invoice } from "../types";
+import { FileText, Save, History } from "lucide-react";
+import type { Tenant, Invoice, SavedInvoice } from "../types";
+
+const STATUS_STYLES: Record<string, { bg: string; color: string }> = {
+  draft: { bg: "rgba(100,116,139,0.1)", color: "#64748b" },
+  sent: { bg: "rgba(0,102,255,0.1)", color: "#0066ff" },
+  paid: { bg: "rgba(52,168,108,0.1)", color: "#34a86c" },
+  cancelled: { bg: "rgba(239,83,80,0.1)", color: "#ef5350" },
+};
 
 export default function InvoiceTab() {
   const [tenants, setTenants] = useState<Tenant[]>([]);
@@ -11,6 +18,8 @@ export default function InvoiceTab() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const [savedInvoices, setSavedInvoices] = useState<SavedInvoice[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     fetch("/api/tenants")
@@ -24,7 +33,15 @@ export default function InvoiceTab() {
         setStartDate(start.toISOString().split("T")[0]);
       })
       .catch(console.error);
+    loadInvoices();
   }, []);
+
+  const loadInvoices = () => {
+    fetch("/api/invoices")
+      .then(r => r.json())
+      .then(setSavedInvoices)
+      .catch(() => setSavedInvoices([]));
+  };
 
   const generateInvoice = async () => {
     if (!selectedTenant || !startDate || !endDate) return;
@@ -54,7 +71,8 @@ export default function InvoiceTab() {
       });
       const data = await res.json();
       if (res.ok) {
-        setSaveStatus(`Saved: ${data.filename}`);
+        setSaveStatus(`Saved: ${data.invoice_number || data.filename}`);
+        loadInvoices();
       } else {
         setSaveStatus(`Error: ${data.detail}`);
       }
@@ -62,6 +80,19 @@ export default function InvoiceTab() {
       setSaveStatus("Failed to save invoice.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const updateInvoiceStatus = async (id: number, status: string) => {
+    try {
+      await fetch(`/api/invoices/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      loadInvoices();
+    } catch {
+      console.error("Failed to update invoice status");
     }
   };
 
@@ -171,14 +202,84 @@ export default function InvoiceTab() {
             <p>No billable appointments found for this tenant and date range.</p>
           </div>
         </div>
-      ) : (
+      ) : !showHistory ? (
         <div className="card full-width">
           <div className="invoice-empty">
             <p><FileText size={40} /></p>
             <p>Select a tenant and date range, then click "Generate Invoice" to preview.</p>
           </div>
         </div>
-      )}
+      ) : null}
+
+      {/* Invoice History */}
+      <div className="card full-width">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h2 style={{ margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+            <History size={18} /> Saved Invoices
+          </h2>
+          <button className="btn-secondary" onClick={() => { setShowHistory(!showHistory); loadInvoices(); }} style={{ fontSize: 12, padding: "4px 12px" }}>
+            {showHistory ? "Hide" : "Show"} History
+          </button>
+        </div>
+
+        {showHistory && (
+          savedInvoices.length > 0 ? (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Tenant</th>
+                    <th>Period</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {savedInvoices.map(inv => {
+                    const st = STATUS_STYLES[inv.status] || STATUS_STYLES.draft;
+                    return (
+                      <tr key={inv.id}>
+                        <td className="bold">{inv.invoice_number}</td>
+                        <td>{inv.tenant_name}</td>
+                        <td style={{ fontSize: 12, color: "var(--text-light)" }}>{inv.start_date} to {inv.end_date}</td>
+                        <td className="bold">{formatCurrency(inv.total)}</td>
+                        <td>
+                          <span className="status-badge" style={{ backgroundColor: st.bg, color: st.color }}>
+                            {inv.status}
+                          </span>
+                        </td>
+                        <td className="time-cell">{new Date(inv.created_at).toLocaleDateString("en-CA")}</td>
+                        <td>
+                          <select
+                            value={inv.status}
+                            onChange={e => updateInvoiceStatus(inv.id, e.target.value)}
+                            style={{
+                              fontSize: 11, padding: "3px 6px", border: "1px solid var(--border)",
+                              borderRadius: 4, background: "var(--card-bg)", fontFamily: "inherit",
+                            }}
+                          >
+                            <option value="draft">Draft</option>
+                            <option value="sent">Sent</option>
+                            <option value="paid">Paid</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p style={{ color: "var(--text-light)", textAlign: "center", padding: 24 }}>
+              No invoices saved yet. Generate and save an invoice to see it here.
+            </p>
+          )
+        )}
+      </div>
     </div>
   );
 }

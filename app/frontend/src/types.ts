@@ -112,3 +112,17 @@ export interface TenantOverview {
   failed: number;
   timed_out: number;
 }
+
+export interface SavedInvoice {
+  id: number;
+  invoice_number: string;
+  tenant_id: string;
+  tenant_name: string;
+  start_date: string;
+  end_date: string;
+  total: number;
+  status: string;
+  created_at: string;
+  pdf_volume_path: string | null;
+  notes: string | null;
+}

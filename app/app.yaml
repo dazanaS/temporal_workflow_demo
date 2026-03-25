@@ -13,3 +13,7 @@ env:
     value: "a82088b3bfe8752c"
   - name: GENIE_SPACE_ID
     value: "01f1258ac8e91665ac1f796131a7a19b"
+  - name: LAKEBASE_HOST
+    value: "ep-odd-bread-d25xag2n.database.us-east-1.cloud.databricks.com"
+  - name: LAKEBASE_DATABASE
+    value: "temporal"

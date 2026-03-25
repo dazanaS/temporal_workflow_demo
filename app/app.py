@@ -1,12 +1,14 @@
 """
 PocketHealth Temporal Workflow Analytics - Databricks App
-FastAPI backend serving React dashboard with SQL Warehouse queries.
+FastAPI backend with Lakebase (Postgres) for serving + SQL Warehouse for analytics.
 """
 
 import os
 import json
 import time
+import subprocess
 import httpx
+import psycopg2
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
@@ -19,6 +21,13 @@ from databricks import sql as dbsql
 CATALOG = "dazana_classic_ws_catalog"
 SCHEMA = "temporal"
 IS_DATABRICKS_APP = bool(os.environ.get("DATABRICKS_APP_NAME"))
+
+# Lakebase Configuration
+LAKEBASE_HOST = os.environ.get(
+    "LAKEBASE_HOST",
+    "ep-odd-bread-d25xag2n.database.us-east-1.cloud.databricks.com",
+)
+LAKEBASE_DATABASE = os.environ.get("LAKEBASE_DATABASE", "temporal")
 
 # --- Appointment Pricing (server-side rate card) ---
 APPOINTMENT_PRICING = {
@@ -70,7 +79,7 @@ def get_connection():
 
 
 def run_query(query: str) -> list[dict]:
-    """Execute SQL and return list of dicts."""
+    """Execute SQL on Databricks warehouse and return list of dicts."""
     conn = get_connection()
     try:
         cursor = conn.cursor()
@@ -82,14 +91,83 @@ def run_query(query: str) -> list[dict]:
         conn.close()
 
 
+# --- Lakebase Connection ---
+
+def get_lakebase_connection():
+    """Get a Postgres connection to Lakebase using OAuth."""
+    if IS_DATABRICKS_APP:
+        w = WorkspaceClient()
+        token = w.config.authenticate()
+        if isinstance(token, dict):
+            token = token.get("Authorization", "").replace("Bearer ", "")
+        user = os.environ.get("DATABRICKS_USER", "app")
+    else:
+        profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+        w = WorkspaceClient(profile=profile)
+        auth = w.config.authenticate()
+        if isinstance(auth, dict):
+            token = auth.get("Authorization", "").replace("Bearer ", "")
+        else:
+            token = auth
+        user = os.environ.get("LAKEBASE_USER", "dazana.hasan@databricks.com")
+    return psycopg2.connect(
+        host=LAKEBASE_HOST,
+        port=5432,
+        database=LAKEBASE_DATABASE,
+        user=user,
+        password=token,
+        sslmode="require",
+    )
+
+
+def run_lakebase_query(query: str, params: tuple | None = None) -> list[dict]:
+    """Execute SQL on Lakebase and return list of dicts."""
+    conn = get_lakebase_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        columns = [desc[0] for desc in cursor.description]
+        rows = cursor.fetchall()
+        return [dict(zip(columns, row)) for row in rows]
+    finally:
+        conn.close()
+
+
+def run_lakebase_execute(query: str, params: tuple | None = None) -> None:
+    """Execute a write operation on Lakebase."""
+    conn = get_lakebase_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def run_lakebase_execute_returning(query: str, params: tuple | None = None) -> dict | None:
+    """Execute a write on Lakebase and return the first row."""
+    conn = get_lakebase_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        conn.commit()
+        if cursor.description:
+            columns = [desc[0] for desc in cursor.description]
+            row = cursor.fetchone()
+            return dict(zip(columns, row)) if row else None
+        return None
+    finally:
+        conn.close()
+
+
 # --- FastAPI App ---
 app = FastAPI(title="PocketHealth Temporal Workflow Analytics")
 
 
 @app.get("/api/summary")
 def get_summary():
-    """Overall KPI metrics."""
-    query = f"""
+    """Overall KPI metrics — served from Lakebase."""
+    query = """
     SELECT
         SUM(workflow_count) AS total_workflows,
         SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) AS successful_workflows,
@@ -97,30 +175,29 @@ def get_summary():
         SUM(CASE WHEN status = 'TimedOut' THEN workflow_count ELSE 0 END) AS timed_out_workflows,
         ROUND(SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) * 100.0 / SUM(workflow_count), 1) AS success_rate,
         ROUND(AVG(avg_duration_seconds), 1) AS avg_duration_seconds
-    FROM {CATALOG}.{SCHEMA}.daily_workflow_summary
+    FROM daily_workflow_summary
     """
-    results = run_query(query)
+    results = run_lakebase_query(query)
     if results:
         row = results[0]
-        # Convert Decimal types to float for JSON serialization
         return {k: float(v) if v is not None else 0 for k, v in row.items()}
     return {}
 
 
 @app.get("/api/daily-trend")
 def get_daily_trend():
-    """Daily workflow counts for time-series chart."""
-    query = f"""
+    """Daily workflow counts — served from Lakebase."""
+    query = """
     SELECT
         workflow_date,
         SUM(workflow_count) AS total,
         SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) AS completed,
         SUM(CASE WHEN status != 'Completed' THEN workflow_count ELSE 0 END) AS failed
-    FROM {CATALOG}.{SCHEMA}.daily_workflow_summary
+    FROM daily_workflow_summary
     GROUP BY workflow_date
     ORDER BY workflow_date
     """
-    results = run_query(query)
+    results = run_lakebase_query(query)
     return [
         {
             "date": str(r["workflow_date"]),
@@ -134,17 +211,17 @@ def get_daily_trend():
 
 @app.get("/api/workflows-by-type")
 def get_workflows_by_type():
-    """Workflow type breakdown."""
-    query = f"""
+    """Workflow type breakdown — served from Lakebase."""
+    query = """
     SELECT
         workflow_type,
         SUM(workflow_count) AS count,
         ROUND(SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) * 100.0 / SUM(workflow_count), 1) AS success_rate
-    FROM {CATALOG}.{SCHEMA}.daily_workflow_summary
+    FROM daily_workflow_summary
     GROUP BY workflow_type
     ORDER BY count DESC
     """
-    results = run_query(query)
+    results = run_lakebase_query(query)
     return [
         {
             "workflow_type": r["workflow_type"].replace("Workflow", ""),
@@ -157,18 +234,18 @@ def get_workflows_by_type():
 
 @app.get("/api/appointments-by-type")
 def get_appointments_by_type():
-    """Appointment type breakdown."""
-    query = f"""
+    """Appointment type breakdown — served from Lakebase."""
+    query = """
     SELECT
         appointment_type,
         SUM(total_count) AS total,
         SUM(success_count) AS successful,
         ROUND(SUM(success_count) * 100.0 / SUM(total_count), 1) AS success_rate
-    FROM {CATALOG}.{SCHEMA}.appointment_type_metrics
+    FROM appointment_type_metrics
     GROUP BY appointment_type
     ORDER BY total DESC
     """
-    results = run_query(query)
+    results = run_lakebase_query(query)
     return [
         {
             "appointment_type": r["appointment_type"],
@@ -182,12 +259,10 @@ def get_appointments_by_type():
 
 @app.get("/api/facilities")
 def get_facilities():
-    """Facility utilization metrics."""
-    query = f"""
-    SELECT * FROM {CATALOG}.{SCHEMA}.facility_utilization
-    ORDER BY total_appointments DESC
-    """
-    results = run_query(query)
+    """Facility utilization — served from Lakebase."""
+    results = run_lakebase_query("""
+        SELECT * FROM facility_utilization ORDER BY total_appointments DESC
+    """)
     return [
         {
             "facility_name": r["facility_name"],
@@ -203,12 +278,8 @@ def get_facilities():
 
 @app.get("/api/providers")
 def get_providers():
-    """Provider workload metrics."""
-    query = f"""
-    SELECT * FROM {CATALOG}.{SCHEMA}.provider_workload
-    ORDER BY total_appointments DESC
-    """
-    results = run_query(query)
+    """Provider workload — served from Lakebase."""
+    results = run_lakebase_query("SELECT * FROM provider_workload ORDER BY total_appointments DESC")
     return [
         {
             "provider_name": r["provider_name"],
@@ -224,12 +295,8 @@ def get_providers():
 
 @app.get("/api/failures")
 def get_failures():
-    """Failure analysis breakdown."""
-    query = f"""
-    SELECT * FROM {CATALOG}.{SCHEMA}.failure_analysis
-    ORDER BY failure_count DESC
-    """
-    results = run_query(query)
+    """Failure analysis — served from Lakebase."""
+    results = run_lakebase_query("SELECT * FROM failure_analysis ORDER BY failure_count DESC")
     return [
         {
             "workflow_type": r["workflow_type"].replace("Workflow", ""),
@@ -417,18 +484,12 @@ def get_pipeline_metrics():
 
 @app.get("/api/tenants")
 def get_tenants():
-    """List all distinct tenants for invoice dropdown."""
-    query = f"""
-    SELECT DISTINCT tenant_id, tenant_name
-    FROM {CATALOG}.{SCHEMA}.billing_summary
-    WHERE tenant_id IS NOT NULL
-    ORDER BY tenant_name
-    """
-    results = run_query(query)
-    return [
-        {"tenant_id": r["tenant_id"], "tenant_name": r["tenant_name"]}
-        for r in results
-    ]
+    """List all distinct tenants — served from Lakebase."""
+    results = run_lakebase_query("""
+        SELECT DISTINCT tenant_id, tenant_name FROM billing_summary
+        WHERE tenant_id IS NOT NULL ORDER BY tenant_name
+    """)
+    return [{"tenant_id": r["tenant_id"], "tenant_name": r["tenant_name"]} for r in results]
 
 
 @app.get("/api/invoice")
@@ -437,27 +498,20 @@ def get_invoice(
     start_date: str = Query(...),
     end_date: str = Query(...),
 ):
-    """Calculate invoice with line items for a tenant and date range."""
-    query = f"""
-    SELECT
-        appointment_type,
-        SUM(billable_count) AS billable_count
-    FROM {CATALOG}.{SCHEMA}.billing_summary
-    WHERE tenant_id = '{tenant_id}'
-      AND service_date >= '{start_date}'
-      AND service_date <= '{end_date}'
-    GROUP BY appointment_type
-    ORDER BY appointment_type
-    """
-    results = run_query(query)
+    """Calculate invoice with line items — served from Lakebase."""
+    results = run_lakebase_query("""
+        SELECT appointment_type, SUM(billable_count) AS billable_count
+        FROM billing_summary
+        WHERE tenant_id = %s AND service_date >= %s AND service_date <= %s
+        GROUP BY appointment_type ORDER BY appointment_type
+    """, (tenant_id, start_date, end_date))
 
     # Look up tenant name
     tenant_name = tenant_id
-    tenant_q = f"""
-    SELECT DISTINCT tenant_name FROM {CATALOG}.{SCHEMA}.billing_summary
-    WHERE tenant_id = '{tenant_id}' LIMIT 1
-    """
-    tenant_res = run_query(tenant_q)
+    tenant_res = run_lakebase_query(
+        "SELECT DISTINCT tenant_name FROM billing_summary WHERE tenant_id = %s LIMIT 1",
+        (tenant_id,),
+    )
     if tenant_res:
         tenant_name = tenant_res[0]["tenant_name"]
 
@@ -484,6 +538,54 @@ def get_invoice(
         "line_items": line_items,
         "total": round(total, 2),
     }
+
+
+# --- Invoice CRUD (Lakebase) ---
+
+@app.get("/api/invoices")
+def list_invoices(tenant_id: str = Query(None)):
+    """List all invoices, optionally filtered by tenant."""
+    if tenant_id:
+        results = run_lakebase_query(
+            "SELECT * FROM invoices WHERE tenant_id = %s ORDER BY created_at DESC",
+            (tenant_id,),
+        )
+    else:
+        results = run_lakebase_query("SELECT * FROM invoices ORDER BY created_at DESC")
+    return [
+        {
+            "id": r["id"],
+            "invoice_number": r["invoice_number"],
+            "tenant_id": r["tenant_id"],
+            "tenant_name": r["tenant_name"],
+            "start_date": str(r["start_date"]),
+            "end_date": str(r["end_date"]),
+            "total": float(r["total"]),
+            "status": r["status"],
+            "created_at": str(r["created_at"]),
+            "pdf_volume_path": r["pdf_volume_path"],
+            "notes": r["notes"],
+        }
+        for r in results
+    ]
+
+
+class InvoiceStatusUpdate(BaseModel):
+    status: str
+    notes: str | None = None
+
+
+@app.patch("/api/invoices/{invoice_id}")
+def update_invoice_status(invoice_id: int, req: InvoiceStatusUpdate):
+    """Update invoice status (draft, sent, paid, cancelled)."""
+    valid_statuses = {"draft", "sent", "paid", "cancelled"}
+    if req.status not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+    run_lakebase_execute(
+        "UPDATE invoices SET status = %s, notes = COALESCE(%s, notes), updated_at = NOW() WHERE id = %s",
+        (req.status, req.notes, invoice_id),
+    )
+    return {"status": "updated", "invoice_id": invoice_id}
 
 
 class InvoiceSaveRequest(BaseModel):
@@ -634,7 +736,35 @@ def save_invoice(req: InvoiceSaveRequest):
         pdf_bytes = pdf.output()
         w.files.upload(file_path, BytesIO(pdf_bytes), overwrite=True)
 
-        return {"status": "success", "path": file_path, "filename": filename}
+        # Create invoice record in Lakebase
+        invoice_number = f"INV-{req.tenant_id}-{timestamp}"
+        inv = run_lakebase_execute_returning("""
+            INSERT INTO invoices (invoice_number, tenant_id, tenant_name, start_date, end_date, total, status, pdf_volume_path)
+            VALUES (%s, %s, %s, %s, %s, %s, 'draft', %s)
+            RETURNING id, invoice_number
+        """, (invoice_number, req.tenant_id, req.tenant_name, req.start_date, req.end_date, req.total, file_path))
+
+        # Insert line items
+        if inv:
+            conn = get_lakebase_connection()
+            try:
+                cur = conn.cursor()
+                for item in req.line_items:
+                    cur.execute("""
+                        INSERT INTO invoice_line_items (invoice_id, appointment_type, count, unit_price, subtotal)
+                        VALUES (%s, %s, %s, %s, %s)
+                    """, (inv["id"], item["appointment_type"], item["count"], item["unit_price"], item["subtotal"]))
+                conn.commit()
+            finally:
+                conn.close()
+
+        return {
+            "status": "success",
+            "path": file_path,
+            "filename": filename,
+            "invoice_id": inv["id"] if inv else None,
+            "invoice_number": inv["invoice_number"] if inv else None,
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save invoice: {str(e)}")
 
