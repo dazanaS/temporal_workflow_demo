@@ -497,24 +497,132 @@ class InvoiceSaveRequest(BaseModel):
 
 @app.post("/api/invoice/save")
 def save_invoice(req: InvoiceSaveRequest):
-    """Save invoice JSON to UC Volume."""
+    """Generate a PDF invoice and save it to a UC Volume."""
     from datetime import datetime as dt
     from io import BytesIO
+    from fpdf import FPDF
 
     volume_path = f"/Volumes/{CATALOG}/{SCHEMA}/invoices"
     timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"invoice_{req.tenant_id}_{req.start_date}_{req.end_date}_{timestamp}.json"
+    filename = f"invoice_{req.tenant_id}_{req.start_date}_{req.end_date}_{timestamp}.pdf"
 
-    invoice_data = {
-        "tenant_id": req.tenant_id,
-        "tenant_name": req.tenant_name,
-        "start_date": req.start_date,
-        "end_date": req.end_date,
-        "line_items": req.line_items,
-        "total": req.total,
-        "generated_at": dt.now().isoformat(),
-    }
+    def fmt_currency(n: float) -> str:
+        return f"${n:,.2f}"
 
+    # --- Build PDF ---
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=20)
+    pdf.add_page()
+
+    # Header bar
+    pdf.set_fill_color(0, 102, 255)
+    pdf.rect(10, 10, 190, 1.5, "F")
+
+    # Brand
+    pdf.set_font("Helvetica", "B", 22)
+    pdf.set_text_color(0, 102, 255)
+    pdf.set_y(18)
+    pdf.cell(0, 10, "PocketHealth", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(100, 116, 139)
+    pdf.cell(0, 5, "Temporal Workflow Platform  |  Healthcare Scheduling Services", new_x="LMARGIN", new_y="NEXT")
+
+    # Invoice title (right aligned)
+    pdf.set_y(18)
+    pdf.set_font("Helvetica", "B", 28)
+    pdf.set_text_color(15, 23, 42)
+    pdf.cell(0, 10, "INVOICE", align="R", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.ln(8)
+    # Divider
+    pdf.set_draw_color(226, 232, 240)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(6)
+
+    # Bill To and Invoice Details side by side
+    y_top = pdf.get_y()
+
+    # Left: Bill To
+    pdf.set_font("Helvetica", "B", 8)
+    pdf.set_text_color(100, 116, 139)
+    pdf.cell(95, 5, "BILL TO", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.set_text_color(15, 23, 42)
+    pdf.cell(95, 6, req.tenant_name, new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(100, 116, 139)
+    pdf.cell(95, 5, f"Tenant ID: {req.tenant_id}", new_x="LMARGIN", new_y="NEXT")
+
+    # Right: Invoice Details
+    pdf.set_y(y_top)
+    pdf.set_x(120)
+    pdf.set_font("Helvetica", "B", 8)
+    pdf.set_text_color(100, 116, 139)
+    pdf.cell(70, 5, "INVOICE DETAILS", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(120)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.cell(70, 5, f"Date: {dt.now().strftime('%Y-%m-%d')}", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(120)
+    pdf.cell(70, 5, f"Period: {req.start_date} to {req.end_date}", align="R", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.ln(12)
+
+    # Table Header
+    pdf.set_fill_color(248, 250, 252)
+    pdf.set_draw_color(226, 232, 240)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_text_color(100, 116, 139)
+
+    col_widths = [75, 35, 35, 45]
+    headers = ["Service / Appointment Type", "Billable Count", "Unit Price", "Subtotal"]
+    for i, h in enumerate(headers):
+        align = "R" if i > 0 else "L"
+        pdf.cell(col_widths[i], 10, h, border="B", fill=True, align=align)
+    pdf.ln()
+
+    # Table Rows
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(51, 65, 85)
+    for item in req.line_items:
+        appt_type = item.get("appointment_type", "")
+        count = item.get("count", 0)
+        unit_price = item.get("unit_price", 0)
+        subtotal = item.get("subtotal", 0)
+
+        pdf.cell(col_widths[0], 9, appt_type, border="B")
+        pdf.cell(col_widths[1], 9, str(count), border="B", align="R")
+        pdf.cell(col_widths[2], 9, fmt_currency(unit_price), border="B", align="R")
+        pdf.set_font("Helvetica", "B", 10)
+        pdf.cell(col_widths[3], 9, fmt_currency(subtotal), border="B", align="R")
+        pdf.set_font("Helvetica", "", 10)
+        pdf.ln()
+
+    pdf.ln(4)
+
+    # Total
+    pdf.set_draw_color(15, 23, 42)
+    pdf.line(120, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(4)
+    pdf.set_font("Helvetica", "B", 14)
+    pdf.set_text_color(15, 23, 42)
+    pdf.set_x(120)
+    pdf.cell(35, 10, "Total Due", align="R")
+    pdf.cell(45, 10, fmt_currency(req.total), align="R")
+    pdf.ln(14)
+
+    # Footer
+    pdf.set_draw_color(226, 232, 240)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(4)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_text_color(148, 163, 184)
+    pdf.cell(0, 5, f"Generated on {dt.now().strftime('%Y-%m-%d %H:%M:%S')}  |  PocketHealth Temporal Workflow Platform", align="C")
+
+    # Bottom bar
+    pdf.set_fill_color(0, 102, 255)
+    pdf.rect(10, 285, 190, 1.5, "F")
+
+    # --- Upload to Volume ---
     try:
         if IS_DATABRICKS_APP:
             w = WorkspaceClient()
@@ -523,8 +631,8 @@ def save_invoice(req: InvoiceSaveRequest):
             w = WorkspaceClient(profile=profile)
 
         file_path = f"{volume_path}/{filename}"
-        content = json.dumps(invoice_data, indent=2).encode("utf-8")
-        w.files.upload(file_path, BytesIO(content), overwrite=True)
+        pdf_bytes = pdf.output()
+        w.files.upload(file_path, BytesIO(pdf_bytes), overwrite=True)
 
         return {"status": "success", "path": file_path, "filename": filename}
     except Exception as e:

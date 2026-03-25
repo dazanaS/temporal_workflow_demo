@@ -99,7 +99,7 @@ export default function InvoiceTab() {
               <button className="btn-secondary" onClick={handlePrint}>Print / Save PDF</button>
               <button className="btn-primary" onClick={saveToVolume} disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                 <Save size={14} />
-                {saving ? "Saving..." : "Save to Volume"}
+                {saving ? "Saving..." : "Save PDF to Volume"}
               </button>
             </>
           )}
