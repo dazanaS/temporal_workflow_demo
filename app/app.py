@@ -95,13 +95,19 @@ def run_query(query: str) -> list[dict]:
 
 def get_lakebase_connection():
     """Get a Postgres connection to Lakebase using OAuth."""
+    user = os.environ.get("LAKEBASE_USER", "")
     if IS_DATABRICKS_APP:
         w = WorkspaceClient()
-        token = w.config.authenticate()
-        if isinstance(token, dict):
-            token = token.get("Authorization", "").replace("Bearer ", "")
-        user = os.environ.get("DATABRICKS_USER", "app")
+        if not user:
+            user = w.config.client_id or ""
+        auth = w.config.authenticate()
+        if isinstance(auth, dict):
+            token = auth.get("Authorization", "").replace("Bearer ", "")
+        else:
+            token = str(auth)
     else:
+        if not user:
+            user = "dazana.hasan@databricks.com"
         profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
         w = WorkspaceClient(profile=profile)
         auth = w.config.authenticate()
@@ -109,7 +115,6 @@ def get_lakebase_connection():
             token = auth.get("Authorization", "").replace("Bearer ", "")
         else:
             token = auth
-        user = os.environ.get("LAKEBASE_USER", "dazana.hasan@databricks.com")
     return psycopg2.connect(
         host=LAKEBASE_HOST,
         port=5432,
@@ -118,6 +123,27 @@ def get_lakebase_connection():
         password=token,
         sslmode="require",
     )
+
+
+# Track whether Lakebase is reachable
+_lakebase_available = None
+
+
+def _check_lakebase():
+    """Check if Lakebase is reachable. Cache the result."""
+    global _lakebase_available
+    if _lakebase_available is not None:
+        return _lakebase_available
+    try:
+        conn = get_lakebase_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT 1")
+        conn.close()
+        _lakebase_available = True
+    except Exception as e:
+        print(f"[WARN] Lakebase unavailable, falling back to SQL warehouse: {e}")
+        _lakebase_available = False
+    return _lakebase_available
 
 
 def run_lakebase_query(query: str, params: tuple | None = None) -> list[dict]:
@@ -131,6 +157,16 @@ def run_lakebase_query(query: str, params: tuple | None = None) -> list[dict]:
         return [dict(zip(columns, row)) for row in rows]
     finally:
         conn.close()
+
+
+def run_serving_query(lb_query: str, wh_query: str, lb_params: tuple | None = None) -> list[dict]:
+    """Try Lakebase first, fall back to SQL warehouse if unavailable."""
+    if _check_lakebase():
+        try:
+            return run_lakebase_query(lb_query, lb_params)
+        except Exception:
+            pass
+    return run_query(wh_query)
 
 
 def run_lakebase_execute(query: str, params: tuple | None = None) -> None:
@@ -166,18 +202,16 @@ app = FastAPI(title="PocketHealth Temporal Workflow Analytics")
 
 @app.get("/api/summary")
 def get_summary():
-    """Overall KPI metrics — served from Lakebase."""
-    query = """
-    SELECT
-        SUM(workflow_count) AS total_workflows,
+    """Overall KPI metrics — Lakebase with warehouse fallback."""
+    lb_q = """SELECT SUM(workflow_count) AS total_workflows,
         SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) AS successful_workflows,
         SUM(CASE WHEN status = 'Failed' THEN workflow_count ELSE 0 END) AS failed_workflows,
         SUM(CASE WHEN status = 'TimedOut' THEN workflow_count ELSE 0 END) AS timed_out_workflows,
         ROUND(SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) * 100.0 / SUM(workflow_count), 1) AS success_rate,
         ROUND(AVG(avg_duration_seconds), 1) AS avg_duration_seconds
-    FROM daily_workflow_summary
-    """
-    results = run_lakebase_query(query)
+    FROM daily_workflow_summary"""
+    wh_q = lb_q.replace("FROM daily_workflow_summary", f"FROM {CATALOG}.{SCHEMA}.daily_workflow_summary")
+    results = run_serving_query(lb_q, wh_q)
     if results:
         row = results[0]
         return {k: float(v) if v is not None else 0 for k, v in row.items()}
@@ -186,83 +220,57 @@ def get_summary():
 
 @app.get("/api/daily-trend")
 def get_daily_trend():
-    """Daily workflow counts — served from Lakebase."""
-    query = """
-    SELECT
-        workflow_date,
-        SUM(workflow_count) AS total,
+    """Daily workflow counts — Lakebase with warehouse fallback."""
+    lb_q = """SELECT workflow_date, SUM(workflow_count) AS total,
         SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) AS completed,
         SUM(CASE WHEN status != 'Completed' THEN workflow_count ELSE 0 END) AS failed
-    FROM daily_workflow_summary
-    GROUP BY workflow_date
-    ORDER BY workflow_date
-    """
-    results = run_lakebase_query(query)
+    FROM daily_workflow_summary GROUP BY workflow_date ORDER BY workflow_date"""
+    wh_q = lb_q.replace("FROM daily_workflow_summary", f"FROM {CATALOG}.{SCHEMA}.daily_workflow_summary")
+    results = run_serving_query(lb_q, wh_q)
     return [
-        {
-            "date": str(r["workflow_date"]),
-            "total": int(r["total"]),
-            "completed": int(r["completed"]),
-            "failed": int(r["failed"]),
-        }
+        {"date": str(r["workflow_date"]), "total": int(r["total"]),
+         "completed": int(r["completed"]), "failed": int(r["failed"])}
         for r in results
     ]
 
 
 @app.get("/api/workflows-by-type")
 def get_workflows_by_type():
-    """Workflow type breakdown — served from Lakebase."""
-    query = """
-    SELECT
-        workflow_type,
-        SUM(workflow_count) AS count,
+    """Workflow type breakdown — Lakebase with warehouse fallback."""
+    lb_q = """SELECT workflow_type, SUM(workflow_count) AS count,
         ROUND(SUM(CASE WHEN status = 'Completed' THEN workflow_count ELSE 0 END) * 100.0 / SUM(workflow_count), 1) AS success_rate
-    FROM daily_workflow_summary
-    GROUP BY workflow_type
-    ORDER BY count DESC
-    """
-    results = run_lakebase_query(query)
+    FROM daily_workflow_summary GROUP BY workflow_type ORDER BY count DESC"""
+    wh_q = lb_q.replace("FROM daily_workflow_summary", f"FROM {CATALOG}.{SCHEMA}.daily_workflow_summary")
+    results = run_serving_query(lb_q, wh_q)
     return [
-        {
-            "workflow_type": r["workflow_type"].replace("Workflow", ""),
-            "count": int(r["count"]),
-            "success_rate": float(r["success_rate"]),
-        }
+        {"workflow_type": r["workflow_type"].replace("Workflow", ""),
+         "count": int(r["count"]), "success_rate": float(r["success_rate"])}
         for r in results
     ]
 
 
 @app.get("/api/appointments-by-type")
 def get_appointments_by_type():
-    """Appointment type breakdown — served from Lakebase."""
-    query = """
-    SELECT
-        appointment_type,
-        SUM(total_count) AS total,
-        SUM(success_count) AS successful,
+    """Appointment type breakdown — Lakebase with warehouse fallback."""
+    lb_q = """SELECT appointment_type, SUM(total_count) AS total, SUM(success_count) AS successful,
         ROUND(SUM(success_count) * 100.0 / SUM(total_count), 1) AS success_rate
-    FROM appointment_type_metrics
-    GROUP BY appointment_type
-    ORDER BY total DESC
-    """
-    results = run_lakebase_query(query)
+    FROM appointment_type_metrics GROUP BY appointment_type ORDER BY total DESC"""
+    wh_q = lb_q.replace("FROM appointment_type_metrics", f"FROM {CATALOG}.{SCHEMA}.appointment_type_metrics")
+    results = run_serving_query(lb_q, wh_q)
     return [
-        {
-            "appointment_type": r["appointment_type"],
-            "total": int(r["total"]),
-            "successful": int(r["successful"]),
-            "success_rate": float(r["success_rate"]),
-        }
+        {"appointment_type": r["appointment_type"], "total": int(r["total"]),
+         "successful": int(r["successful"]), "success_rate": float(r["success_rate"])}
         for r in results
     ]
 
 
 @app.get("/api/facilities")
 def get_facilities():
-    """Facility utilization — served from Lakebase."""
-    results = run_lakebase_query("""
-        SELECT * FROM facility_utilization ORDER BY total_appointments DESC
-    """)
+    """Facility utilization — Lakebase with warehouse fallback."""
+    results = run_serving_query(
+        "SELECT * FROM facility_utilization ORDER BY total_appointments DESC",
+        f"SELECT * FROM {CATALOG}.{SCHEMA}.facility_utilization ORDER BY total_appointments DESC",
+    )
     return [
         {
             "facility_name": r["facility_name"],
@@ -278,8 +286,11 @@ def get_facilities():
 
 @app.get("/api/providers")
 def get_providers():
-    """Provider workload — served from Lakebase."""
-    results = run_lakebase_query("SELECT * FROM provider_workload ORDER BY total_appointments DESC")
+    """Provider workload — Lakebase with warehouse fallback."""
+    results = run_serving_query(
+        "SELECT * FROM provider_workload ORDER BY total_appointments DESC",
+        f"SELECT * FROM {CATALOG}.{SCHEMA}.provider_workload ORDER BY total_appointments DESC",
+    )
     return [
         {
             "provider_name": r["provider_name"],
@@ -295,8 +306,11 @@ def get_providers():
 
 @app.get("/api/failures")
 def get_failures():
-    """Failure analysis — served from Lakebase."""
-    results = run_lakebase_query("SELECT * FROM failure_analysis ORDER BY failure_count DESC")
+    """Failure analysis — Lakebase with warehouse fallback."""
+    results = run_serving_query(
+        "SELECT * FROM failure_analysis ORDER BY failure_count DESC",
+        f"SELECT * FROM {CATALOG}.{SCHEMA}.failure_analysis ORDER BY failure_count DESC",
+    )
     return [
         {
             "workflow_type": r["workflow_type"].replace("Workflow", ""),
@@ -484,11 +498,11 @@ def get_pipeline_metrics():
 
 @app.get("/api/tenants")
 def get_tenants():
-    """List all distinct tenants — served from Lakebase."""
-    results = run_lakebase_query("""
-        SELECT DISTINCT tenant_id, tenant_name FROM billing_summary
-        WHERE tenant_id IS NOT NULL ORDER BY tenant_name
-    """)
+    """List all distinct tenants — Lakebase with warehouse fallback."""
+    results = run_serving_query(
+        "SELECT DISTINCT tenant_id, tenant_name FROM billing_summary WHERE tenant_id IS NOT NULL ORDER BY tenant_name",
+        f"SELECT DISTINCT tenant_id, tenant_name FROM {CATALOG}.{SCHEMA}.billing_summary WHERE tenant_id IS NOT NULL ORDER BY tenant_name",
+    )
     return [{"tenant_id": r["tenant_id"], "tenant_name": r["tenant_name"]} for r in results]
 
 
@@ -498,19 +512,35 @@ def get_invoice(
     start_date: str = Query(...),
     end_date: str = Query(...),
 ):
-    """Calculate invoice with line items — served from Lakebase."""
-    results = run_lakebase_query("""
-        SELECT appointment_type, SUM(billable_count) AS billable_count
-        FROM billing_summary
-        WHERE tenant_id = %s AND service_date >= %s AND service_date <= %s
-        GROUP BY appointment_type ORDER BY appointment_type
-    """, (tenant_id, start_date, end_date))
+    """Calculate invoice — Lakebase with warehouse fallback."""
+    if _check_lakebase():
+        try:
+            results = run_lakebase_query("""
+                SELECT appointment_type, SUM(billable_count) AS billable_count
+                FROM billing_summary
+                WHERE tenant_id = %s AND service_date >= %s AND service_date <= %s
+                GROUP BY appointment_type ORDER BY appointment_type
+            """, (tenant_id, start_date, end_date))
+        except Exception:
+            results = run_query(f"""
+                SELECT appointment_type, SUM(billable_count) AS billable_count
+                FROM {CATALOG}.{SCHEMA}.billing_summary
+                WHERE tenant_id = '{tenant_id}' AND service_date >= '{start_date}' AND service_date <= '{end_date}'
+                GROUP BY appointment_type ORDER BY appointment_type
+            """)
+    else:
+        results = run_query(f"""
+            SELECT appointment_type, SUM(billable_count) AS billable_count
+            FROM {CATALOG}.{SCHEMA}.billing_summary
+            WHERE tenant_id = '{tenant_id}' AND service_date >= '{start_date}' AND service_date <= '{end_date}'
+            GROUP BY appointment_type ORDER BY appointment_type
+        """)
 
     # Look up tenant name
     tenant_name = tenant_id
-    tenant_res = run_lakebase_query(
-        "SELECT DISTINCT tenant_name FROM billing_summary WHERE tenant_id = %s LIMIT 1",
-        (tenant_id,),
+    tenant_res = run_serving_query(
+        "SELECT DISTINCT tenant_name FROM billing_summary WHERE tenant_id = '" + tenant_id + "' LIMIT 1",
+        f"SELECT DISTINCT tenant_name FROM {CATALOG}.{SCHEMA}.billing_summary WHERE tenant_id = '{tenant_id}' LIMIT 1",
     )
     if tenant_res:
         tenant_name = tenant_res[0]["tenant_name"]

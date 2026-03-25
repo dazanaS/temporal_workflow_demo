@@ -17,3 +17,5 @@ env:
     value: "ep-odd-bread-d25xag2n.database.us-east-1.cloud.databricks.com"
   - name: LAKEBASE_DATABASE
     value: "temporal"
+  - name: LAKEBASE_USER
+    value: "2f15bb40-ab3c-473c-9fb1-b77e5f15e36f"
