@@ -19,7 +19,7 @@ export default function InvoiceTab() {
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [savedInvoices, setSavedInvoices] = useState<SavedInvoice[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
+  const [showHistory, setShowHistory] = useState(true);
 
   useEffect(() => {
     fetch("/api/tenants")
