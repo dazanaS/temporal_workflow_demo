@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, BarChart, Bar, Legend,
+  PieChart, Pie, Cell, BarChart, Bar, Legend, AreaChart, Area,
 } from "recharts";
+import {
+  Settings, CheckCircle, Clock, XCircle, MapPin, Phone, Users, Building2,
+} from "lucide-react";
 import "./App.css";
 import type {
   Summary, DailyTrend, WorkflowType, AppointmentType,
   Facility, RecentWorkflow, Failure,
+  RegionalDistribution, ConfirmationMethod, HourlyDistribution,
+  TopProvider, TenantOverview,
 } from "./types";
 import { CHART_COLORS, STATUS_COLORS } from "./theme";
 import DataFlowTab from "./components/DataFlowTab";
@@ -33,7 +38,7 @@ function formatDuration(seconds: number): string {
 }
 
 function KpiCard({ icon, label, value, sub, color }: {
-  icon: string; label: string; value: string | number; sub?: string; color: string;
+  icon: React.ReactNode; label: string; value: string | number; sub?: string; color: string;
 }) {
   return (
     <div className="kpi-card">
@@ -55,13 +60,19 @@ export default function App() {
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [recentWorkflows, setRecentWorkflows] = useState<RecentWorkflow[]>([]);
   const [failures, setFailures] = useState<Failure[]>([]);
+  const [regionalDist, setRegionalDist] = useState<RegionalDistribution[]>([]);
+  const [confirmationMethods, setConfirmationMethods] = useState<ConfirmationMethod[]>([]);
+  const [hourlyDist, setHourlyDist] = useState<HourlyDistribution[]>([]);
+  const [topProviders, setTopProviders] = useState<TopProvider[]>([]);
+  const [tenantOverview, setTenantOverview] = useState<TenantOverview[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabId>("overview");
 
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [sumRes, trendRes, wtRes, atRes, facRes, recRes, failRes] = await Promise.all([
+        const [sumRes, trendRes, wtRes, atRes, facRes, recRes, failRes,
+               regRes, confRes, hourRes, provRes, tenRes] = await Promise.all([
           fetch("/api/summary").then(r => r.json()),
           fetch("/api/daily-trend").then(r => r.json()),
           fetch("/api/workflows-by-type").then(r => r.json()),
@@ -69,6 +80,11 @@ export default function App() {
           fetch("/api/facilities").then(r => r.json()),
           fetch("/api/recent-workflows").then(r => r.json()),
           fetch("/api/failures").then(r => r.json()),
+          fetch("/api/regional-distribution").then(r => r.json()).catch(() => []),
+          fetch("/api/confirmation-methods").then(r => r.json()).catch(() => []),
+          fetch("/api/hourly-distribution").then(r => r.json()).catch(() => []),
+          fetch("/api/top-providers").then(r => r.json()).catch(() => []),
+          fetch("/api/tenant-overview").then(r => r.json()).catch(() => []),
         ]);
         setSummary(sumRes);
         setDailyTrend(trendRes);
@@ -77,6 +93,11 @@ export default function App() {
         setFacilities(facRes);
         setRecentWorkflows(recRes);
         setFailures(failRes);
+        setRegionalDist(regRes);
+        setConfirmationMethods(confRes);
+        setHourlyDist(hourRes);
+        setTopProviders(provRes);
+        setTenantOverview(tenRes);
       } catch (err) {
         console.error("Failed to fetch data:", err);
       } finally {
@@ -113,10 +134,10 @@ export default function App() {
 
       {summary && (
         <div className="kpi-grid">
-          <KpiCard icon="&#9881;" label="Total Workflows" value={summary.total_workflows.toLocaleString()} sub="Last 30 days" color={CHART_COLORS[0]} />
-          <KpiCard icon="&#10003;" label="Success Rate" value={`${summary.success_rate}%`} sub={`${summary.successful_workflows.toLocaleString()} completed`} color={CHART_COLORS[2]} />
-          <KpiCard icon="&#9202;" label="Avg Duration" value={formatDuration(summary.avg_duration_seconds)} sub="Per workflow execution" color={CHART_COLORS[1]} />
-          <KpiCard icon="&#10007;" label="Failed / Timed Out" value={summary.failed_workflows + summary.timed_out_workflows} sub={`${summary.failed_workflows} failed, ${summary.timed_out_workflows} timed out`} color={CHART_COLORS[4]} />
+          <KpiCard icon={<Settings size={22} />} label="Total Workflows" value={summary.total_workflows.toLocaleString()} sub="Last 30 days" color={CHART_COLORS[0]} />
+          <KpiCard icon={<CheckCircle size={22} />} label="Success Rate" value={`${summary.success_rate}%`} sub={`${summary.successful_workflows.toLocaleString()} completed`} color={CHART_COLORS[2]} />
+          <KpiCard icon={<Clock size={22} />} label="Avg Duration" value={formatDuration(summary.avg_duration_seconds)} sub="Per workflow execution" color={CHART_COLORS[1]} />
+          <KpiCard icon={<XCircle size={22} />} label="Failed / Timed Out" value={summary.failed_workflows + summary.timed_out_workflows} sub={`${summary.failed_workflows} failed, ${summary.timed_out_workflows} timed out`} color={CHART_COLORS[4]} />
         </div>
       )}
 
@@ -130,6 +151,7 @@ export default function App() {
 
       {activeTab === "overview" && (
         <>
+          {/* Daily Workflow Volume */}
           <div className="card full-width">
             <h2>Daily Workflow Volume</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -145,17 +167,31 @@ export default function App() {
             </ResponsiveContainer>
           </div>
 
+          {/* Row 1: Workflow Types + Appointments by Type */}
           <div className="chart-grid">
             <div className="card">
               <h2>Workflow Types</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie data={workflowTypes} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="count" nameKey="workflow_type" label={({ name, value }: any) => `${name}: ${value}`} labelLine={false}>
-                    {workflowTypes.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="pie-with-legend">
+                <div className="pie-legend">
+                  {workflowTypes.map((wt, i) => (
+                    <div key={i} className="pie-legend-item">
+                      <div className="pie-legend-swatch" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
+                      <span className="pie-legend-name">{wt.workflow_type}</span>
+                      <span className="pie-legend-value">{wt.count.toLocaleString()}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie data={workflowTypes} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="count" nameKey="workflow_type">
+                        {workflowTypes.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                      </Pie>
+                      <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
             </div>
 
             <div className="card">
@@ -171,6 +207,113 @@ export default function App() {
               </ResponsiveContainer>
             </div>
           </div>
+
+          {/* Row 2: Regional Distribution + Confirmation Methods */}
+          {(regionalDist.length > 0 || confirmationMethods.length > 0) && (
+            <div className="chart-grid">
+              {regionalDist.length > 0 && (
+                <div className="card">
+                  <h2><MapPin size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />Regional Distribution</h2>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={regionalDist} layout="vertical" margin={{ left: 100 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis type="number" fontSize={12} />
+                      <YAxis type="category" dataKey="region" fontSize={12} width={95} />
+                      <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
+                      <Bar dataKey="count" fill={CHART_COLORS[1]} radius={[0, 4, 4, 0]} name="Appointments" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {confirmationMethods.length > 0 && (
+                <div className="card">
+                  <h2><Phone size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />Confirmation Methods</h2>
+                  <div className="pie-with-legend">
+                    <div className="pie-legend">
+                      {confirmationMethods.map((cm, i) => (
+                        <div key={i} className="pie-legend-item">
+                          <div className="pie-legend-swatch" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
+                          <span className="pie-legend-name">{cm.method}</span>
+                          <span className="pie-legend-value">{cm.count.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie data={confirmationMethods} cx="50%" cy="50%" innerRadius={55} outerRadius={90} dataKey="count" nameKey="method">
+                            {confirmationMethods.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                          </Pie>
+                          <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Row 3: Hourly Distribution (full width) */}
+          {hourlyDist.length > 0 && (
+            <div className="card full-width">
+              <h2><Clock size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />Hourly Workflow Distribution</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={hourlyDist}>
+                  <defs>
+                    <linearGradient id="hourlyGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={CHART_COLORS[0]} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={CHART_COLORS[0]} stopOpacity={0.02} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="label" fontSize={12} />
+                  <YAxis fontSize={12} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="count" stroke={CHART_COLORS[0]} strokeWidth={2} fill="url(#hourlyGradient)" name="Workflows" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {/* Row 4: Top Providers + Tenant Overview */}
+          {(topProviders.length > 0 || tenantOverview.length > 0) && (
+            <div className="chart-grid">
+              {topProviders.length > 0 && (
+                <div className="card">
+                  <h2><Users size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />Top Providers</h2>
+                  <ResponsiveContainer width="100%" height={280}>
+                    <BarChart data={topProviders} layout="vertical" margin={{ left: 130 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis type="number" fontSize={12} />
+                      <YAxis type="category" dataKey="provider_name" fontSize={12} width={125} />
+                      <Tooltip formatter={(value: any) => Number(value).toLocaleString()} />
+                      <Bar dataKey="total" fill={CHART_COLORS[0]} radius={[0, 4, 4, 0]} name="Total Workflows" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {tenantOverview.length > 0 && (
+                <div className="card">
+                  <h2><Building2 size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />Tenant Overview</h2>
+                  <ResponsiveContainer width="100%" height={280}>
+                    <BarChart data={tenantOverview} margin={{ left: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis dataKey="tenant_name" fontSize={11} angle={-15} textAnchor="end" height={60} />
+                      <YAxis fontSize={12} />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="completed" stackId="a" fill={STATUS_COLORS.Completed} name="Completed" />
+                      <Bar dataKey="failed" stackId="a" fill={STATUS_COLORS.Failed} name="Failed" />
+                      <Bar dataKey="timed_out" stackId="a" fill={STATUS_COLORS.TimedOut} name="Timed Out" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+          )}
         </>
       )}
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FileText, Save } from "lucide-react";
 import type { Tenant, Invoice } from "../types";
 
 export default function InvoiceTab() {
@@ -8,13 +9,14 @@ export default function InvoiceTab() {
   const [endDate, setEndDate] = useState("");
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/tenants")
       .then(r => r.json())
       .then(data => {
         setTenants(data);
-        // Default date range: last 30 days
         const end = new Date();
         const start = new Date();
         start.setDate(start.getDate() - 30);
@@ -27,6 +29,7 @@ export default function InvoiceTab() {
   const generateInvoice = async () => {
     if (!selectedTenant || !startDate || !endDate) return;
     setLoading(true);
+    setSaveStatus(null);
     try {
       const params = new URLSearchParams({ tenant_id: selectedTenant, start_date: startDate, end_date: endDate });
       const res = await fetch(`/api/invoice?${params}`);
@@ -36,6 +39,29 @@ export default function InvoiceTab() {
       console.error("Failed to generate invoice:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const saveToVolume = async () => {
+    if (!invoice) return;
+    setSaving(true);
+    setSaveStatus(null);
+    try {
+      const res = await fetch("/api/invoice/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(invoice),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSaveStatus(`Saved: ${data.filename}`);
+      } else {
+        setSaveStatus(`Error: ${data.detail}`);
+      }
+    } catch {
+      setSaveStatus("Failed to save invoice.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -69,7 +95,18 @@ export default function InvoiceTab() {
             {loading ? "Generating..." : "Generate Invoice"}
           </button>
           {invoice && (
-            <button className="btn-secondary" onClick={handlePrint}>Print / Save PDF</button>
+            <>
+              <button className="btn-secondary" onClick={handlePrint}>Print / Save PDF</button>
+              <button className="btn-primary" onClick={saveToVolume} disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Save size={14} />
+                {saving ? "Saving..." : "Save to Volume"}
+              </button>
+            </>
+          )}
+          {saveStatus && (
+            <span style={{ fontSize: 13, fontWeight: 500, color: saveStatus.startsWith("Error") || saveStatus.startsWith("Failed") ? "var(--danger)" : "var(--success)" }}>
+              {saveStatus}
+            </span>
           )}
         </div>
       </div>
@@ -130,14 +167,14 @@ export default function InvoiceTab() {
       ) : invoice ? (
         <div className="card full-width">
           <div className="invoice-empty">
-            <p>&#128196;</p>
+            <p><FileText size={40} /></p>
             <p>No billable appointments found for this tenant and date range.</p>
           </div>
         </div>
       ) : (
         <div className="card full-width">
           <div className="invoice-empty">
-            <p>&#128196;</p>
+            <p><FileText size={40} /></p>
             <p>Select a tenant and date range, then click "Generate Invoice" to preview.</p>
           </div>
         </div>

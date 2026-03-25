@@ -270,7 +270,111 @@ def get_recent_workflows():
     ]
 
 
-# --- New Endpoints ---
+# --- Additional Metric Endpoints ---
+
+@app.get("/api/regional-distribution")
+def get_regional_distribution():
+    """Appointment counts by patient region."""
+    query = f"""
+    SELECT
+        patient_region AS region,
+        COUNT(*) AS count,
+        ROUND(COUNT(CASE WHEN status = 'Completed' THEN 1 END) * 100.0 / COUNT(*), 1) AS success_rate
+    FROM {CATALOG}.{SCHEMA}.workflows_silver
+    WHERE patient_region IS NOT NULL
+    GROUP BY patient_region
+    ORDER BY count DESC
+    """
+    results = run_query(query)
+    return [
+        {"region": r["region"], "count": int(r["count"]), "success_rate": float(r["success_rate"])}
+        for r in results
+    ]
+
+
+@app.get("/api/confirmation-methods")
+def get_confirmation_methods():
+    """Confirmation method breakdown for completed workflows."""
+    query = f"""
+    SELECT
+        confirmation_method AS method,
+        COUNT(*) AS count
+    FROM {CATALOG}.{SCHEMA}.workflows_silver
+    WHERE confirmation_method IS NOT NULL
+    GROUP BY confirmation_method
+    ORDER BY count DESC
+    """
+    results = run_query(query)
+    return [{"method": r["method"], "count": int(r["count"])} for r in results]
+
+
+@app.get("/api/hourly-distribution")
+def get_hourly_distribution():
+    """Workflow volume by hour of day."""
+    query = f"""
+    SELECT
+        HOUR(start_time) AS hour,
+        COUNT(*) AS count
+    FROM {CATALOG}.{SCHEMA}.workflows_silver
+    WHERE start_time IS NOT NULL
+    GROUP BY HOUR(start_time)
+    ORDER BY hour
+    """
+    results = run_query(query)
+    return [
+        {"hour": int(r["hour"]), "label": f"{int(r['hour']):02d}:00", "count": int(r["count"])}
+        for r in results
+    ]
+
+
+@app.get("/api/top-providers")
+def get_top_providers():
+    """Top 5 providers by workflow volume."""
+    query = f"""
+    SELECT
+        provider_name,
+        COUNT(*) AS total,
+        ROUND(COUNT(CASE WHEN status = 'Completed' THEN 1 END) * 100.0 / COUNT(*), 1) AS success_rate
+    FROM {CATALOG}.{SCHEMA}.workflows_silver
+    WHERE provider_name IS NOT NULL
+    GROUP BY provider_name
+    ORDER BY total DESC
+    LIMIT 5
+    """
+    results = run_query(query)
+    return [
+        {"provider_name": r["provider_name"], "total": int(r["total"]), "success_rate": float(r["success_rate"])}
+        for r in results
+    ]
+
+
+@app.get("/api/tenant-overview")
+def get_tenant_overview():
+    """Tenant workflow breakdown by status."""
+    query = f"""
+    SELECT
+        tenant_name,
+        COUNT(CASE WHEN status = 'Completed' THEN 1 END) AS completed,
+        COUNT(CASE WHEN status = 'Failed' THEN 1 END) AS failed,
+        COUNT(CASE WHEN status = 'TimedOut' THEN 1 END) AS timed_out
+    FROM {CATALOG}.{SCHEMA}.workflows_silver
+    WHERE tenant_name IS NOT NULL
+    GROUP BY tenant_name
+    ORDER BY (completed + failed + timed_out) DESC
+    """
+    results = run_query(query)
+    return [
+        {
+            "tenant_name": r["tenant_name"],
+            "completed": int(r["completed"]),
+            "failed": int(r["failed"]),
+            "timed_out": int(r["timed_out"]),
+        }
+        for r in results
+    ]
+
+
+# --- Pipeline & Data Flow Endpoints ---
 
 @app.get("/api/pipeline-metrics")
 def get_pipeline_metrics():
@@ -380,6 +484,51 @@ def get_invoice(
         "line_items": line_items,
         "total": round(total, 2),
     }
+
+
+class InvoiceSaveRequest(BaseModel):
+    tenant_id: str
+    tenant_name: str
+    start_date: str
+    end_date: str
+    line_items: list[dict]
+    total: float
+
+
+@app.post("/api/invoice/save")
+def save_invoice(req: InvoiceSaveRequest):
+    """Save invoice JSON to UC Volume."""
+    from datetime import datetime as dt
+    from io import BytesIO
+
+    volume_path = f"/Volumes/{CATALOG}/{SCHEMA}/invoices"
+    timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"invoice_{req.tenant_id}_{req.start_date}_{req.end_date}_{timestamp}.json"
+
+    invoice_data = {
+        "tenant_id": req.tenant_id,
+        "tenant_name": req.tenant_name,
+        "start_date": req.start_date,
+        "end_date": req.end_date,
+        "line_items": req.line_items,
+        "total": req.total,
+        "generated_at": dt.now().isoformat(),
+    }
+
+    try:
+        if IS_DATABRICKS_APP:
+            w = WorkspaceClient()
+        else:
+            profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+            w = WorkspaceClient(profile=profile)
+
+        file_path = f"{volume_path}/{filename}"
+        content = json.dumps(invoice_data, indent=2).encode("utf-8")
+        w.files.upload(file_path, BytesIO(content), overwrite=True)
+
+        return {"status": "success", "path": file_path, "filename": filename}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save invoice: {str(e)}")
 
 
 @app.get("/api/genie-url")

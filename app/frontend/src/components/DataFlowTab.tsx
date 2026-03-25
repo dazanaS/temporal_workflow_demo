@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
+import { Clock, HardDrive, Database, Layers, Trophy, ChevronDown, ArrowRight } from "lucide-react";
 import type { PipelineMetrics } from "../types";
 
-function PipelineNode({ icon, label, count, sub }: {
-  icon: string; label: string; count: number | string; sub?: string;
+function TierNode({ tier, icon, label, count, sub }: {
+  tier: "source" | "bronze" | "silver" | "gold";
+  icon: React.ReactNode;
+  label: string;
+  count: number | string;
+  sub?: string;
 }) {
   return (
-    <div className="pipeline-node">
-      <div className="pipeline-node-box">
-        <div className="pipeline-node-icon">{icon}</div>
-        <div className="pipeline-node-label">{label}</div>
-        <div className="pipeline-node-count">{typeof count === "number" ? count.toLocaleString() : count}</div>
-        {sub && <div className="pipeline-node-sub">{sub}</div>}
+    <div className="pipeline-tier-node">
+      <div className={`pipeline-tier-node-icon ${tier}`}>{icon}</div>
+      <div className="pipeline-tier-node-info">
+        <div className="pipeline-tier-node-label">{label}</div>
+        <div className="pipeline-tier-node-count">{typeof count === "number" ? count.toLocaleString() : count}</div>
+        {sub && <div className="pipeline-tier-node-sub">{sub}</div>}
       </div>
     </div>
   );
 }
 
-function Connector({ animated = true }: { animated?: boolean }) {
+function VerticalConnector({ label }: { label: string }) {
   return (
-    <div className="pipeline-connector">
-      <div className={`pipeline-arrow ${animated ? "animated" : ""}`} />
+    <div className="pipeline-vertical-connector">
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div className="pipeline-vertical-line" />
+        <ChevronDown size={16} style={{ color: "var(--text-light)", margin: "-4px 0" }} />
+      </div>
+      <span className="pipeline-vertical-label">{label}</span>
     </div>
   );
 }
@@ -44,16 +53,48 @@ export default function DataFlowTab() {
     <div className="data-flow">
       <div className="card full-width">
         <h2>Data Pipeline Flow</h2>
-        <div className="pipeline-diagram">
-          <PipelineNode icon="&#9200;" label="Temporal" count={metrics.bronze_count} sub="JSON exports" />
-          <Connector />
-          <PipelineNode icon="&#128230;" label="UC Volume" count={metrics.bronze_count} sub="Raw files" />
-          <Connector />
-          <PipelineNode icon="&#129513;" label="Bronze" count={metrics.bronze_count} sub="Auto Loader" />
-          <Connector />
-          <PipelineNode icon="&#129505;" label="Silver" count={metrics.silver_count} sub={`${metrics.rows_dropped} dropped`} />
-          <Connector />
-          <PipelineNode icon="&#129504;" label="Gold" count={goldTotal} sub={`${metrics.gold_tables.length} views`} />
+        <div className="pipeline-redesign">
+          {/* Source Tier */}
+          <div className="pipeline-tier pipeline-tier--source">
+            <div className="pipeline-tier-label">Source</div>
+            <TierNode tier="source" icon={<Clock size={20} />} label="Temporal" count={metrics.bronze_count} sub="JSON exports" />
+            <div className="pipeline-tier-arrow"><ArrowRight size={20} /></div>
+            <TierNode tier="source" icon={<HardDrive size={20} />} label="UC Volume" count={metrics.bronze_count} sub="Raw files" />
+          </div>
+
+          <VerticalConnector label="Auto Loader ingestion into streaming table" />
+
+          {/* Bronze Tier */}
+          <div className="pipeline-tier pipeline-tier--bronze">
+            <div className="pipeline-tier-label">Bronze</div>
+            <TierNode tier="bronze" icon={<Database size={20} />} label="workflows_bronze" count={metrics.bronze_count} sub="Raw records with metadata" />
+          </div>
+
+          <VerticalConnector label="Parse, flatten, validate (3 quality constraints)" />
+
+          {/* Silver Tier */}
+          <div className="pipeline-tier pipeline-tier--silver">
+            <div className="pipeline-tier-label">Silver</div>
+            <TierNode tier="silver" icon={<Layers size={20} />} label="workflows_silver" count={metrics.silver_count} sub={`${metrics.rows_dropped} rows dropped`} />
+          </div>
+
+          <VerticalConnector label="Aggregate into materialized views" />
+
+          {/* Gold Tier */}
+          <div className="pipeline-tier pipeline-tier--gold">
+            <div className="pipeline-tier-label">Gold ({goldTotal.toLocaleString()} total rows)</div>
+            <div className="pipeline-gold-grid">
+              {metrics.gold_tables.map((t, i) => (
+                <div key={i} className="pipeline-gold-mini">
+                  <div className="pipeline-gold-mini-icon"><Trophy size={14} /></div>
+                  <div className="pipeline-gold-mini-info">
+                    <div className="pipeline-gold-mini-label">{t.name.replace(/_/g, " ")}</div>
+                    <div className="pipeline-gold-mini-count">{t.count.toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

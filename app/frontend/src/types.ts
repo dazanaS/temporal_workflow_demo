@@ -82,3 +82,33 @@ export interface PipelineMetrics {
   gold_tables: { name: string; count: number }[];
   rows_dropped: number;
 }
+
+export interface RegionalDistribution {
+  region: string;
+  count: number;
+  success_rate: number;
+}
+
+export interface ConfirmationMethod {
+  method: string;
+  count: number;
+}
+
+export interface HourlyDistribution {
+  hour: number;
+  label: string;
+  count: number;
+}
+
+export interface TopProvider {
+  provider_name: string;
+  total: number;
+  success_rate: number;
+}
+
+export interface TenantOverview {
+  tenant_name: string;
+  completed: number;
+  failed: number;
+  timed_out: number;
+}

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Bot } from "lucide-react";
 
 interface GenieMessage {
   role: "user" | "assistant";
@@ -112,7 +113,7 @@ export default function GenieTab() {
         }}>
           {messages.length === 0 && !loading && (
             <div style={{ textAlign: "center", padding: "40px 0", color: "var(--text-light)" }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>&#129302;</div>
+              <div style={{ marginBottom: 12 }}><Bot size={40} /></div>
               <p style={{ fontSize: 16, fontWeight: 600, color: "var(--text-heading)", marginBottom: 4 }}>
                 Ask a question about your workflow data
               </p>
