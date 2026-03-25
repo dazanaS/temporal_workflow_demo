@@ -570,34 +570,38 @@ def get_invoice(
     }
 
 
-# --- Invoice CRUD (Lakebase) ---
+# --- Invoice CRUD (Lakebase with graceful fallback) ---
 
 @app.get("/api/invoices")
 def list_invoices(tenant_id: str = Query(None)):
-    """List all invoices, optionally filtered by tenant."""
-    if tenant_id:
-        results = run_lakebase_query(
-            "SELECT * FROM invoices WHERE tenant_id = %s ORDER BY created_at DESC",
-            (tenant_id,),
-        )
-    else:
-        results = run_lakebase_query("SELECT * FROM invoices ORDER BY created_at DESC")
-    return [
-        {
-            "id": r["id"],
-            "invoice_number": r["invoice_number"],
-            "tenant_id": r["tenant_id"],
-            "tenant_name": r["tenant_name"],
-            "start_date": str(r["start_date"]),
-            "end_date": str(r["end_date"]),
-            "total": float(r["total"]),
-            "status": r["status"],
-            "created_at": str(r["created_at"]),
-            "pdf_volume_path": r["pdf_volume_path"],
-            "notes": r["notes"],
-        }
-        for r in results
-    ]
+    """List all invoices. Returns empty list if Lakebase is unavailable."""
+    try:
+        if tenant_id:
+            results = run_lakebase_query(
+                "SELECT * FROM invoices WHERE tenant_id = %s ORDER BY created_at DESC",
+                (tenant_id,),
+            )
+        else:
+            results = run_lakebase_query("SELECT * FROM invoices ORDER BY created_at DESC")
+        return [
+            {
+                "id": r["id"],
+                "invoice_number": r["invoice_number"],
+                "tenant_id": r["tenant_id"],
+                "tenant_name": r["tenant_name"],
+                "start_date": str(r["start_date"]),
+                "end_date": str(r["end_date"]),
+                "total": float(r["total"]),
+                "status": r["status"],
+                "created_at": str(r["created_at"]),
+                "pdf_volume_path": r["pdf_volume_path"],
+                "notes": r["notes"],
+            }
+            for r in results
+        ]
+    except Exception as e:
+        print(f"[WARN] Lakebase unavailable for invoice list: {e}")
+        return []
 
 
 class InvoiceStatusUpdate(BaseModel):
@@ -611,11 +615,14 @@ def update_invoice_status(invoice_id: int, req: InvoiceStatusUpdate):
     valid_statuses = {"draft", "sent", "paid", "cancelled"}
     if req.status not in valid_statuses:
         raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
-    run_lakebase_execute(
-        "UPDATE invoices SET status = %s, notes = COALESCE(%s, notes), updated_at = NOW() WHERE id = %s",
-        (req.status, req.notes, invoice_id),
-    )
-    return {"status": "updated", "invoice_id": invoice_id}
+    try:
+        run_lakebase_execute(
+            "UPDATE invoices SET status = %s, notes = COALESCE(%s, notes), updated_at = NOW() WHERE id = %s",
+            (req.status, req.notes, invoice_id),
+        )
+        return {"status": "updated", "invoice_id": invoice_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lakebase unavailable: {str(e)}")
 
 
 class InvoiceSaveRequest(BaseModel):
@@ -754,7 +761,7 @@ def save_invoice(req: InvoiceSaveRequest):
     pdf.set_fill_color(0, 102, 255)
     pdf.rect(10, 285, 190, 1.5, "F")
 
-    # --- Upload to Volume ---
+    # --- Upload PDF to Volume ---
     try:
         if IS_DATABRICKS_APP:
             w = WorkspaceClient()
@@ -765,16 +772,19 @@ def save_invoice(req: InvoiceSaveRequest):
         file_path = f"{volume_path}/{filename}"
         pdf_bytes = pdf.output()
         w.files.upload(file_path, BytesIO(pdf_bytes), overwrite=True)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save PDF: {str(e)}")
 
-        # Create invoice record in Lakebase
-        invoice_number = f"INV-{req.tenant_id}-{timestamp}"
+    # --- Create invoice record in Lakebase (best-effort) ---
+    invoice_number = f"INV-{req.tenant_id}-{timestamp}"
+    inv = None
+    try:
         inv = run_lakebase_execute_returning("""
             INSERT INTO invoices (invoice_number, tenant_id, tenant_name, start_date, end_date, total, status, pdf_volume_path)
             VALUES (%s, %s, %s, %s, %s, %s, 'draft', %s)
             RETURNING id, invoice_number
         """, (invoice_number, req.tenant_id, req.tenant_name, req.start_date, req.end_date, req.total, file_path))
 
-        # Insert line items
         if inv:
             conn = get_lakebase_connection()
             try:
@@ -787,16 +797,16 @@ def save_invoice(req: InvoiceSaveRequest):
                 conn.commit()
             finally:
                 conn.close()
-
-        return {
-            "status": "success",
-            "path": file_path,
-            "filename": filename,
-            "invoice_id": inv["id"] if inv else None,
-            "invoice_number": inv["invoice_number"] if inv else None,
-        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save invoice: {str(e)}")
+        print(f"[WARN] Lakebase invoice record skipped: {e}")
+
+    return {
+        "status": "success",
+        "path": file_path,
+        "filename": filename,
+        "invoice_id": inv["id"] if inv else None,
+        "invoice_number": inv.get("invoice_number") if inv else invoice_number,
+    }
 
 
 @app.get("/api/genie-url")
