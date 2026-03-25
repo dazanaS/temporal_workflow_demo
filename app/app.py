@@ -28,6 +28,10 @@ LAKEBASE_HOST = os.environ.get(
     "ep-odd-bread-d25xag2n.database.us-east-1.cloud.databricks.com",
 )
 LAKEBASE_DATABASE = os.environ.get("LAKEBASE_DATABASE", "temporal")
+LAKEBASE_ENDPOINT = os.environ.get(
+    "LAKEBASE_ENDPOINT",
+    "projects/temporal-lakebase/branches/production/endpoints/primary",
+)
 
 # --- Appointment Pricing (server-side rate card) ---
 APPOINTMENT_PRICING = {
@@ -94,33 +98,56 @@ def run_query(query: str) -> list[dict]:
 # --- Lakebase Connection ---
 
 def get_lakebase_connection():
-    """Get a Postgres connection to Lakebase using OAuth."""
-    user = os.environ.get("LAKEBASE_USER", "")
+    """Get a Postgres connection to Lakebase using native credentials or OAuth."""
+    lb_user = os.environ.get("LAKEBASE_USER", "")
+    lb_password = os.environ.get("LAKEBASE_PASSWORD", "")
+
+    if lb_user and lb_password:
+        # Native Postgres login (preferred for Databricks Apps)
+        return psycopg2.connect(
+            host=LAKEBASE_HOST,
+            port=5432,
+            database=LAKEBASE_DATABASE,
+            user=lb_user,
+            password=lb_password,
+            sslmode="require",
+        )
+
+    # Fallback: OAuth via Lakebase credential API
     if IS_DATABRICKS_APP:
         w = WorkspaceClient()
-        if not user:
-            user = w.config.client_id or ""
-        auth = w.config.authenticate()
-        if isinstance(auth, dict):
-            token = auth.get("Authorization", "").replace("Bearer ", "")
-        else:
-            token = str(auth)
+        ws_host = os.environ.get("DATABRICKS_HOST", "")
+        if ws_host and not ws_host.startswith("http"):
+            ws_host = f"https://{ws_host}"
     else:
-        if not user:
-            user = "dazana.hasan@databricks.com"
         profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
         w = WorkspaceClient(profile=profile)
-        auth = w.config.authenticate()
-        if isinstance(auth, dict):
-            token = auth.get("Authorization", "").replace("Bearer ", "")
-        else:
-            token = auth
+        ws_host = w.config.host
+
+    auth = w.config.authenticate()
+    ws_token = auth.get("Authorization", "").replace("Bearer ", "") if isinstance(auth, dict) else str(auth)
+
+    resp = httpx.post(
+        f"{ws_host}/api/2.0/postgres/credentials",
+        headers={"Authorization": f"Bearer {ws_token}", "Content-Type": "application/json"},
+        json={"endpoint": LAKEBASE_ENDPOINT},
+        timeout=15.0,
+    )
+    resp.raise_for_status()
+    lb_token = resp.json().get("token", "")
+
+    try:
+        me = w.current_user.me()
+        user = me.user_name or ""
+    except Exception:
+        user = "dazana.hasan@databricks.com"
+
     return psycopg2.connect(
         host=LAKEBASE_HOST,
         port=5432,
         database=LAKEBASE_DATABASE,
         user=user,
-        password=token,
+        password=lb_token,
         sslmode="require",
     )
 
