@@ -15,7 +15,7 @@ import urllib.error
 import psycopg2
 
 # --- Configuration ---
-CATALOG = "dazana_classic_ws_catalog"
+CATALOG = "demo_catalog"
 SCHEMA = "temporal"
 WAREHOUSE_ID = "a82088b3bfe8752c"
 LAKEBASE_PROJECT = "temporal-lakebase"
@@ -196,7 +196,7 @@ SYNC_CONFIG = [
 
 def main():
     parser = argparse.ArgumentParser(description="Sync gold tables to Lakebase")
-    parser.add_argument("--profile", default="Dazana-classic-ws", help="Databricks CLI profile")
+    parser.add_argument("--profile", default="demo-workspace", help="Databricks CLI profile")
     args = parser.parse_args()
 
     print("Getting Databricks auth...")

@@ -18,7 +18,7 @@ from databricks.sdk import WorkspaceClient
 from databricks import sql as dbsql
 
 # --- Configuration ---
-CATALOG = "dazana_classic_ws_catalog"
+CATALOG = "demo_catalog"
 SCHEMA = "temporal"
 IS_DATABRICKS_APP = bool(os.environ.get("DATABRICKS_APP_NAME"))
 
@@ -67,7 +67,7 @@ def get_connection():
             access_token=token,
         )
     else:
-        profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+        profile = os.environ.get("DATABRICKS_PROFILE", "demo-workspace-pat")
         w = WorkspaceClient(profile=profile)
         host = w.config.host.replace("https://", "")
         auth = w.config.authenticate()
@@ -120,7 +120,7 @@ def get_lakebase_connection():
         if ws_host and not ws_host.startswith("http"):
             ws_host = f"https://{ws_host}"
     else:
-        profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+        profile = os.environ.get("DATABRICKS_PROFILE", "demo-workspace-pat")
         w = WorkspaceClient(profile=profile)
         ws_host = w.config.host
 
@@ -140,7 +140,7 @@ def get_lakebase_connection():
         me = w.current_user.me()
         user = me.user_name or ""
     except Exception:
-        user = "dazana.hasan@databricks.com"
+        user = "user@databricks.com"
 
     return psycopg2.connect(
         host=LAKEBASE_HOST,
@@ -793,7 +793,7 @@ def save_invoice(req: InvoiceSaveRequest):
         if IS_DATABRICKS_APP:
             w = WorkspaceClient()
         else:
-            profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+            profile = os.environ.get("DATABRICKS_PROFILE", "demo-workspace-pat")
             w = WorkspaceClient(profile=profile)
 
         file_path = f"{volume_path}/{filename}"
@@ -871,7 +871,7 @@ def _get_genie_headers() -> dict:
         if isinstance(token, dict):
             token = token.get("Authorization", "").replace("Bearer ", "")
     else:
-        profile = os.environ.get("DATABRICKS_PROFILE", "Dazana-classic-ws-pat")
+        profile = os.environ.get("DATABRICKS_PROFILE", "demo-workspace-pat")
         w = WorkspaceClient(profile=profile)
         auth = w.config.authenticate()
         if isinstance(auth, dict):

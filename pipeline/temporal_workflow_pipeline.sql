@@ -1,7 +1,7 @@
 -- =============================================================================
 -- PocketHealth Temporal Workflow Ingestion Pipeline
 -- Lakeflow Declarative Pipeline (formerly DLT)
--- Catalog: dazana_classic_ws_catalog | Schema: temporal
+-- Catalog: demo_catalog | Schema: temporal
 -- =============================================================================
 
 -- =============================================================================
@@ -14,7 +14,7 @@ AS SELECT
   _metadata.file_name AS source_file,
   _metadata.file_modification_time AS file_ingested_at
 FROM STREAM read_files(
-  '/Volumes/dazana_classic_ws_catalog/temporal/workflow_exports/',
+  '/Volumes/demo_catalog/temporal/workflow_exports/',
   format => 'json',
   multiLine => 'true'
 );

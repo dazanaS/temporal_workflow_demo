@@ -59,9 +59,9 @@ In this demo, Temporal is simulated by `data_generation/generate_temporal_data.p
 
 ### Unity Catalog Volume (Landing Zone)
 
-Raw JSON files from Temporal land in a UC Volume at `/Volumes/dazana_classic_ws_catalog/temporal/workflow_exports/`. This is the ingestion point — Auto Loader watches this directory and picks up new files as they arrive.
+Raw JSON files from Temporal land in a UC Volume at `/Volumes/demo_catalog/temporal/workflow_exports/`. This is the ingestion point — Auto Loader watches this directory and picks up new files as they arrive.
 
-The Volume also stores generated invoice PDFs at `/Volumes/dazana_classic_ws_catalog/temporal/invoices/`.
+The Volume also stores generated invoice PDFs at `/Volumes/demo_catalog/temporal/invoices/`.
 
 ### Lakeflow Declarative Pipeline (Medallion ETL)
 
@@ -152,17 +152,17 @@ Built with React 19, TypeScript, Vite, and Recharts. Uses lucide-react for icons
 - Node.js 18+ and npm
 - Python 3.10+
 - `psql` client (`brew install postgresql@16`)
-- Databricks profile `Dazana-classic-ws` configured
+- Databricks profile `demo-workspace` configured
 
 ## Workspace & App Details
 
 | Resource | Value |
 |----------|-------|
-| Workspace | https://fevm-dazana-classic-ws.cloud.databricks.com |
+| Workspace | https://demo-workspace.cloud.databricks.com |
 | App Name | pockethealth-temporal-demo |
 | App URL | https://pockethealth-temporal-demo-7474647873824811.aws.databricksapps.com |
 | SQL Warehouse | a82088b3bfe8752c |
-| Catalog/Schema | dazana_classic_ws_catalog.temporal |
+| Catalog/Schema | demo_catalog.temporal |
 | Lakebase Project | temporal-lakebase |
 | Lakebase Endpoint | ep-odd-bread-d25xag2n.database.us-east-1.cloud.databricks.com |
 | Lakebase Database | temporal |
@@ -173,7 +173,7 @@ Built with React 19, TypeScript, Vite, and Recharts. Uses lucide-react for icons
 ### 1. Lakebase Setup (one-time)
 
 ```bash
-PROFILE=Dazana-classic-ws
+PROFILE=demo-workspace
 
 # Verify project exists
 databricks postgres list-projects -p $PROFILE
@@ -197,7 +197,7 @@ PGPASSWORD=$TOKEN psql "host=$HOST port=5432 dbname=temporal user=$EMAIL sslmode
 ### 2. Sync Gold Data to Lakebase
 
 ```bash
-python3 lakebase/sync_gold_to_lakebase.py --profile Dazana-classic-ws
+python3 lakebase/sync_gold_to_lakebase.py --profile demo-workspace
 ```
 
 Run this whenever the Lakeflow pipeline refreshes to keep Lakebase in sync with the latest gold aggregates.
@@ -215,28 +215,28 @@ cd ../..
 
 ```bash
 # Sync source code
-cd app && databricks sync . /Workspace/Users/dazana.hasan@databricks.com/pockethealth-temporal-demo \
-  --profile Dazana-classic-ws
+cd app && databricks sync . /Workspace/Users/user@databricks.com/pockethealth-temporal-demo \
+  --profile demo-workspace
 
 # Upload built frontend
 databricks workspace import-dir frontend/dist \
-  /Workspace/Users/dazana.hasan@databricks.com/pockethealth-temporal-demo/frontend/dist \
-  --overwrite --profile Dazana-classic-ws
+  /Workspace/Users/user@databricks.com/pockethealth-temporal-demo/frontend/dist \
+  --overwrite --profile demo-workspace
 
 # Deploy the app
 databricks apps deploy pockethealth-temporal-demo \
-  --source-code-path /Workspace/Users/dazana.hasan@databricks.com/pockethealth-temporal-demo \
-  --profile Dazana-classic-ws
+  --source-code-path /Workspace/Users/user@databricks.com/pockethealth-temporal-demo \
+  --profile demo-workspace
 ```
 
 ### 5. Verify
 
 ```bash
 # Check app status
-databricks apps get pockethealth-temporal-demo --profile Dazana-classic-ws
+databricks apps get pockethealth-temporal-demo --profile demo-workspace
 
 # Test an API endpoint (requires auth)
-TOKEN=$(databricks auth token -p Dazana-classic-ws -o json | jq -r '.access_token')
+TOKEN=$(databricks auth token -p demo-workspace -o json | jq -r '.access_token')
 curl -s "https://pockethealth-temporal-demo-7474647873824811.aws.databricksapps.com/api/summary" \
   -H "Authorization: Bearer $TOKEN"
 ```
